@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/UIC/EVL-Main Lab - Vive.unity
+  isLoaded: 1
+  isActive: 1
