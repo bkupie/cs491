@@ -1,0 +1,374 @@
+fileFormatVersion: 2
+guid: e942bd68aaed49442857a4669390a340
+timeCreated: 1498170097
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Arm_Attachment
+    100002: Arm_Attachment 1
+    100004: Arm_Rest
+    100006: Arm_Rest 1
+    100008: Back_Rest
+    100010: Back_Rest_Leg
+    100012: Back_Rest_Leg 1
+    100014: Back_Rest_Leg_Attachment
+    100016: Caster_Wheel
+    100018: Caster_Wheel 1
+    100020: Caster_Wheel 2
+    100022: Caster_Wheel 3
+    100024: Front_Leg
+    100026: ID109
+    100028: ID139
+    100030: ID153
+    100032: ID161
+    100034: ID169
+    100036: ID189
+    100038: ID199
+    100040: ID21
+    100042: ID21 1
+    100044: ID231
+    100046: ID258
+    100048: ID282
+    100050: ID29
+    100052: ID29 1
+    100054: ID290
+    100056: ID294
+    100058: ID298
+    100060: ID302
+    100062: ID306
+    100064: ID310
+    100066: ID314
+    100068: ID318
+    100070: ID322
+    100072: ID326
+    100074: ID330
+    100076: ID334
+    100078: ID338
+    100080: ID342
+    100082: ID346
+    100084: ID350
+    100086: ID354
+    100088: ID358
+    100090: ID362
+    100092: ID366
+    100094: ID37
+    100096: ID37 1
+    100098: ID370
+    100100: ID374
+    100102: ID378
+    100104: ID382
+    100106: ID386
+    100108: ID390
+    100110: ID394
+    100112: ID398
+    100114: ID402
+    100116: ID406
+    100118: ID410
+    100120: ID414
+    100122: ID418
+    100124: ID422
+    100126: ID426
+    100128: ID430
+    100130: ID434
+    100132: ID438
+    100134: ID442
+    100136: ID446
+    100138: ID450
+    100140: ID454
+    100142: ID458
+    100144: ID462
+    100146: ID466
+    100148: ID470
+    100150: ID474
+    100152: ID478
+    100154: ID55
+    100156: ID55 1
+    100158: ID63
+    100160: ID63 1
+    100162: ID71
+    100164: ID71 1
+    100166: instance_0
+    100168: instance_1
+    100170: instance_10
+    100172: instance_11
+    100174: instance_12
+    100176: instance_13
+    100178: instance_14
+    100180: instance_2
+    100182: instance_3
+    100184: instance_4
+    100186: instance_5
+    100188: instance_6
+    100190: instance_7
+    100192: instance_8
+    100194: instance_9
+    100196: //RootNode
+    100198: Seat
+    100200: Seat_Basement
+    100202: skp_camera_Last_Saved_SketchUp_View
+    400000: Arm_Attachment
+    400002: Arm_Attachment 1
+    400004: Arm_Rest
+    400006: Arm_Rest 1
+    400008: Back_Rest
+    400010: Back_Rest_Leg
+    400012: Back_Rest_Leg 1
+    400014: Back_Rest_Leg_Attachment
+    400016: Caster_Wheel
+    400018: Caster_Wheel 1
+    400020: Caster_Wheel 2
+    400022: Caster_Wheel 3
+    400024: Front_Leg
+    400026: ID109
+    400028: ID139
+    400030: ID153
+    400032: ID161
+    400034: ID169
+    400036: ID189
+    400038: ID199
+    400040: ID21
+    400042: ID21 1
+    400044: ID231
+    400046: ID258
+    400048: ID282
+    400050: ID29
+    400052: ID29 1
+    400054: ID290
+    400056: ID294
+    400058: ID298
+    400060: ID302
+    400062: ID306
+    400064: ID310
+    400066: ID314
+    400068: ID318
+    400070: ID322
+    400072: ID326
+    400074: ID330
+    400076: ID334
+    400078: ID338
+    400080: ID342
+    400082: ID346
+    400084: ID350
+    400086: ID354
+    400088: ID358
+    400090: ID362
+    400092: ID366
+    400094: ID37
+    400096: ID37 1
+    400098: ID370
+    400100: ID374
+    400102: ID378
+    400104: ID382
+    400106: ID386
+    400108: ID390
+    400110: ID394
+    400112: ID398
+    400114: ID402
+    400116: ID406
+    400118: ID410
+    400120: ID414
+    400122: ID418
+    400124: ID422
+    400126: ID426
+    400128: ID430
+    400130: ID434
+    400132: ID438
+    400134: ID442
+    400136: ID446
+    400138: ID450
+    400140: ID454
+    400142: ID458
+    400144: ID462
+    400146: ID466
+    400148: ID470
+    400150: ID474
+    400152: ID478
+    400154: ID55
+    400156: ID55 1
+    400158: ID63
+    400160: ID63 1
+    400162: ID71
+    400164: ID71 1
+    400166: instance_0
+    400168: instance_1
+    400170: instance_10
+    400172: instance_11
+    400174: instance_12
+    400176: instance_13
+    400178: instance_14
+    400180: instance_2
+    400182: instance_3
+    400184: instance_4
+    400186: instance_5
+    400188: instance_6
+    400190: instance_7
+    400192: instance_8
+    400194: instance_9
+    400196: //RootNode
+    400198: Seat
+    400200: Seat_Basement
+    400202: skp_camera_Last_Saved_SketchUp_View
+    2300000: Arm_Attachment
+    2300002: Arm_Attachment 1
+    2300004: Arm_Rest
+    2300006: Arm_Rest 1
+    2300008: Back_Rest
+    2300010: Back_Rest_Leg
+    2300012: Back_Rest_Leg 1
+    2300014: Back_Rest_Leg_Attachment
+    2300016: Caster_Wheel
+    2300018: Caster_Wheel 1
+    2300020: Caster_Wheel 2
+    2300022: Caster_Wheel 3
+    2300024: Front_Leg
+    2300026: ID153
+    2300028: ID161
+    2300030: ID169
+    2300032: ID189
+    2300034: ID199
+    2300036: ID21
+    2300038: ID21 1
+    2300040: ID282
+    2300042: ID29
+    2300044: ID29 1
+    2300046: ID37
+    2300048: ID37 1
+    2300050: ID55
+    2300052: ID55 1
+    2300054: ID63
+    2300056: ID63 1
+    2300058: ID71
+    2300060: ID71 1
+    2300062: //RootNode
+    2300064: Seat
+    2300066: Seat_Basement
+    3300000: Arm_Attachment
+    3300002: Arm_Attachment 1
+    3300004: Arm_Rest
+    3300006: Arm_Rest 1
+    3300008: Back_Rest
+    3300010: Back_Rest_Leg
+    3300012: Back_Rest_Leg 1
+    3300014: Back_Rest_Leg_Attachment
+    3300016: Caster_Wheel
+    3300018: Caster_Wheel 1
+    3300020: Caster_Wheel 2
+    3300022: Caster_Wheel 3
+    3300024: Front_Leg
+    3300026: ID153
+    3300028: ID161
+    3300030: ID169
+    3300032: ID189
+    3300034: ID199
+    3300036: ID21
+    3300038: ID21 1
+    3300040: ID282
+    3300042: ID29
+    3300044: ID29 1
+    3300046: ID37
+    3300048: ID37 1
+    3300050: ID55
+    3300052: ID55 1
+    3300054: ID63
+    3300056: ID63 1
+    3300058: ID71
+    3300060: ID71 1
+    3300062: //RootNode
+    3300064: Seat
+    3300066: Seat_Basement
+    4300000: SketchUp
+    4300002: ID282
+    4300004: Caster_Wheel
+    4300006: ID21
+    4300008: ID29
+    4300010: ID37
+    4300012: Caster_Wheel
+    4300014: ID55
+    4300016: ID63
+    4300018: ID71
+    4300020: Back_Rest_Leg
+    4300022: Arm_Rest
+    4300024: Arm_Attachment
+    4300026: Seat
+    4300028: Back_Rest
+    4300030: ID153
+    4300032: ID161
+    4300034: ID169
+    4300036: Front_Leg
+    4300038: ID189
+    4300040: ID199
+    4300042: Back_Rest_Leg_Attachment
+    4300044: Seat_Basement
+    4300046: Arm_Attachment
+    4300048: Arm_Rest
+    4300050: Back_Rest_Leg
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
