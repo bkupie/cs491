@@ -1,0 +1,182 @@
+fileFormatVersion: 2
+guid: 82417fa185a85634bb0e5f8a6ac534c7
+timeCreated: 1493852168
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: LabmdaTable-Display
+    100002: LabmdaTable-Display_001
+    100004: LabmdaTable-Display_002
+    100006: LabmdaTable-Display_003
+    100008: LabmdaTable-Display_004
+    100010: LabmdaTable-Display_005
+    100012: LabmdaTable-RoadcaseWheels
+    100014: //RootNode
+    100016: LambdaTable-Banner
+    100018: LambdaTable-PC
+    100020: LambdaTable-PC_001
+    100022: LambdaTable-PC_002
+    100024: LambdaTable-PC_003
+    100026: LambdaTable-PC_004
+    100028: LambdaTable-PC_005
+    100030: LambdaTable-PC_006
+    100032: LambdaTable-PC_007
+    100034: LambdaTable-PC_008
+    100036: LambdaTable-PC_009
+    100038: LambdaTable-Structure
+    100040: LambdaTable-Tabletop
+    100042: LabmdaTable-Roadcase
+    400000: LabmdaTable-Display
+    400002: LabmdaTable-Display_001
+    400004: LabmdaTable-Display_002
+    400006: LabmdaTable-Display_003
+    400008: LabmdaTable-Display_004
+    400010: LabmdaTable-Display_005
+    400012: LabmdaTable-RoadcaseWheels
+    400014: //RootNode
+    400016: LambdaTable-Banner
+    400018: LambdaTable-PC
+    400020: LambdaTable-PC_001
+    400022: LambdaTable-PC_002
+    400024: LambdaTable-PC_003
+    400026: LambdaTable-PC_004
+    400028: LambdaTable-PC_005
+    400030: LambdaTable-PC_006
+    400032: LambdaTable-PC_007
+    400034: LambdaTable-PC_008
+    400036: LambdaTable-PC_009
+    400038: LambdaTable-Structure
+    400040: LambdaTable-Tabletop
+    400042: LabmdaTable-Roadcase
+    2300000: LabmdaTable-Display
+    2300002: LabmdaTable-Display_001
+    2300004: LabmdaTable-Display_002
+    2300006: LabmdaTable-Display_003
+    2300008: LabmdaTable-Display_004
+    2300010: LabmdaTable-Display_005
+    2300012: LabmdaTable-RoadcaseWheels
+    2300014: //RootNode
+    2300016: LambdaTable-Banner
+    2300018: LambdaTable-PC
+    2300020: LambdaTable-PC_001
+    2300022: LambdaTable-PC_002
+    2300024: LambdaTable-PC_003
+    2300026: LambdaTable-PC_004
+    2300028: LambdaTable-PC_005
+    2300030: LambdaTable-PC_006
+    2300032: LambdaTable-PC_007
+    2300034: LambdaTable-PC_008
+    2300036: LambdaTable-PC_009
+    2300038: LambdaTable-Structure
+    2300040: LambdaTable-Tabletop
+    2300042: LabmdaTable-Roadcase
+    3300000: LabmdaTable-Display
+    3300002: LabmdaTable-Display_001
+    3300004: LabmdaTable-Display_002
+    3300006: LabmdaTable-Display_003
+    3300008: LabmdaTable-Display_004
+    3300010: LabmdaTable-Display_005
+    3300012: LabmdaTable-RoadcaseWheels
+    3300014: //RootNode
+    3300016: LambdaTable-Banner
+    3300018: LambdaTable-PC
+    3300020: LambdaTable-PC_001
+    3300022: LambdaTable-PC_002
+    3300024: LambdaTable-PC_003
+    3300026: LambdaTable-PC_004
+    3300028: LambdaTable-PC_005
+    3300030: LambdaTable-PC_006
+    3300032: LambdaTable-PC_007
+    3300034: LambdaTable-PC_008
+    3300036: LambdaTable-PC_009
+    3300038: LambdaTable-Structure
+    3300040: LambdaTable-Tabletop
+    3300042: LabmdaTable-Roadcase
+    4300000: LabmdaTable-Roadcase
+    4300002: LambdaTable-PC_005
+    4300004: LambdaTable-PC_006
+    4300006: LambdaTable-PC_007
+    4300008: LambdaTable-PC_008
+    4300010: LambdaTable-PC_009
+    4300012: LambdaTable-PC_004
+    4300014: LambdaTable-PC_003
+    4300016: LambdaTable-PC_002
+    4300018: LambdaTable-PC_001
+    4300020: LambdaTable-PC
+    4300022: LambdaTable-Structure
+    4300024: LabmdaTable-RoadcaseWheels
+    4300026: LambdaTable-Tabletop
+    4300028: LambdaTable-Banner
+    4300030: LabmdaTable-Display_005
+    4300032: LabmdaTable-Display_004
+    4300034: LabmdaTable-Display_003
+    4300036: LabmdaTable-Display_002
+    4300038: LabmdaTable-Display_001
+    4300040: LabmdaTable-Display
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

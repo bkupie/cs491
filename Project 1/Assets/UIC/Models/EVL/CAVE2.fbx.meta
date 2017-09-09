@@ -1,0 +1,249 @@
+fileFormatVersion: 2
+guid: 0fcb054e0d875bf4d86aef7bdd32a105
+timeCreated: 1492035294
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: DisplayMount
+    100004: Displays
+    100006: Truss
+    100008: TrussCoupling
+    100010: TrussLegs
+    100012: TrussLegs.001
+    100014: TrussLegs.002
+    100016: TrussLegs.003
+    100018: TrussLegs.004
+    100020: TrussLegs.005
+    100022: TrussLegs.006
+    100024: TrussLegs.007
+    100026: TrussLegs.008
+    100028: TrussLowerRing
+    400000: //RootNode
+    400002: DisplayMount
+    400004: Displays
+    400006: Truss
+    400008: TrussCoupling
+    400010: TrussLegs
+    400012: TrussLegs.001
+    400014: TrussLegs.002
+    400016: TrussLegs.003
+    400018: TrussLegs.004
+    400020: TrussLegs.005
+    400022: TrussLegs.006
+    400024: TrussLegs.007
+    400026: TrussLegs.008
+    400028: TrussLowerRing
+    2300000: DisplayMount
+    2300002: Displays
+    2300004: Truss
+    2300006: TrussCoupling
+    2300008: TrussLegs
+    2300010: TrussLegs.001
+    2300012: TrussLegs.002
+    2300014: TrussLegs.003
+    2300016: TrussLegs.004
+    2300018: TrussLegs.005
+    2300020: TrussLegs.006
+    2300022: TrussLegs.007
+    2300024: TrussLegs.008
+    2300026: TrussLowerRing
+    3300000: DisplayMount
+    3300002: Displays
+    3300004: Truss
+    3300006: TrussCoupling
+    3300008: TrussLegs
+    3300010: TrussLegs.001
+    3300012: TrussLegs.002
+    3300014: TrussLegs.003
+    3300016: TrussLegs.004
+    3300018: TrussLegs.005
+    3300020: TrussLegs.006
+    3300022: TrussLegs.007
+    3300024: TrussLegs.008
+    3300026: TrussLowerRing
+    4300000: TrussLegs.008
+    4300002: TrussLowerRing
+    4300004: DisplayMount
+    4300006: TrussLegs
+    4300008: TrussCoupling
+    4300010: Truss
+    4300012: Displays
+    7400000: TrussLegs.008|DNA|Take 0|Layer0
+    7400002: TrussLegs.008|Group.1|Take 0|Layer0
+    7400004: TrussLegs.008|Group.2|Take 0|Layer0
+    7400006: TrussLegs.008|Group.3|Take 0|Layer0
+    7400008: TrussLegs.008|Group.4|Take 0|Layer0
+    7400010: TrussLegs.008|Group.5|Take 0|Layer0
+    7400012: TrussLegs.008|Group|Take 0|Layer0
+    7400014: TrussLegs.008|Plane|Take 0|Layer0
+    7400016: TrussLegs.007|DNA|Take 0|Layer0
+    7400018: TrussLegs.007|Group.1|Take 0|Layer0
+    7400020: TrussLegs.007|Group.2|Take 0|Layer0
+    7400022: TrussLegs.007|Group.3|Take 0|Layer0
+    7400024: TrussLegs.007|Group.4|Take 0|Layer0
+    7400026: TrussLegs.007|Group.5|Take 0|Layer0
+    7400028: TrussLegs.007|Group|Take 0|Layer0
+    7400030: TrussLegs.007|Plane|Take 0|Layer0
+    7400032: TrussLegs.006|DNA|Take 0|Layer0
+    7400034: TrussLegs.006|Group.1|Take 0|Layer0
+    7400036: TrussLegs.006|Group.2|Take 0|Layer0
+    7400038: TrussLegs.006|Group.3|Take 0|Layer0
+    7400040: TrussLegs.006|Group.4|Take 0|Layer0
+    7400042: TrussLegs.006|Group.5|Take 0|Layer0
+    7400044: TrussLegs.006|Group|Take 0|Layer0
+    7400046: TrussLegs.006|Plane|Take 0|Layer0
+    7400048: TrussLegs.005|DNA|Take 0|Layer0
+    7400050: TrussLegs.005|Group.1|Take 0|Layer0
+    7400052: TrussLegs.005|Group.2|Take 0|Layer0
+    7400054: TrussLegs.005|Group.3|Take 0|Layer0
+    7400056: TrussLegs.005|Group.4|Take 0|Layer0
+    7400058: TrussLegs.005|Group.5|Take 0|Layer0
+    7400060: TrussLegs.005|Group|Take 0|Layer0
+    7400062: TrussLegs.005|Plane|Take 0|Layer0
+    7400064: TrussLegs.004|DNA|Take 0|Layer0
+    7400066: TrussLegs.004|Group.1|Take 0|Layer0
+    7400068: TrussLegs.004|Group.2|Take 0|Layer0
+    7400070: TrussLegs.004|Group.3|Take 0|Layer0
+    7400072: TrussLegs.004|Group.4|Take 0|Layer0
+    7400074: TrussLegs.004|Group.5|Take 0|Layer0
+    7400076: TrussLegs.004|Group|Take 0|Layer0
+    7400078: TrussLegs.004|Plane|Take 0|Layer0
+    7400080: TrussLegs.003|DNA|Take 0|Layer0
+    7400082: TrussLegs.003|Group.1|Take 0|Layer0
+    7400084: TrussLegs.003|Group.2|Take 0|Layer0
+    7400086: TrussLegs.003|Group.3|Take 0|Layer0
+    7400088: TrussLegs.003|Group.4|Take 0|Layer0
+    7400090: TrussLegs.003|Group.5|Take 0|Layer0
+    7400092: TrussLegs.003|Group|Take 0|Layer0
+    7400094: TrussLegs.003|Plane|Take 0|Layer0
+    7400096: TrussLegs.002|DNA|Take 0|Layer0
+    7400098: TrussLegs.002|Group.1|Take 0|Layer0
+    7400100: TrussLegs.002|Group.2|Take 0|Layer0
+    7400102: TrussLegs.002|Group.3|Take 0|Layer0
+    7400104: TrussLegs.002|Group.4|Take 0|Layer0
+    7400106: TrussLegs.002|Group.5|Take 0|Layer0
+    7400108: TrussLegs.002|Group|Take 0|Layer0
+    7400110: TrussLegs.002|Plane|Take 0|Layer0
+    7400112: TrussLegs.001|DNA|Take 0|Layer0
+    7400114: TrussLegs.001|Group.1|Take 0|Layer0
+    7400116: TrussLegs.001|Group.2|Take 0|Layer0
+    7400118: TrussLegs.001|Group.3|Take 0|Layer0
+    7400120: TrussLegs.001|Group.4|Take 0|Layer0
+    7400122: TrussLegs.001|Group.5|Take 0|Layer0
+    7400124: TrussLegs.001|Group|Take 0|Layer0
+    7400126: TrussLegs.001|Plane|Take 0|Layer0
+    7400128: TrussLowerRing|DNA|Take 0|Layer0
+    7400130: TrussLowerRing|Group.1|Take 0|Layer0
+    7400132: TrussLowerRing|Group.2|Take 0|Layer0
+    7400134: TrussLowerRing|Group.3|Take 0|Layer0
+    7400136: TrussLowerRing|Group.4|Take 0|Layer0
+    7400138: TrussLowerRing|Group.5|Take 0|Layer0
+    7400140: TrussLowerRing|Group|Take 0|Layer0
+    7400142: TrussLowerRing|Plane|Take 0|Layer0
+    7400144: DisplayMount|DNA|Take 0|Layer0
+    7400146: DisplayMount|Group.1|Take 0|Layer0
+    7400148: DisplayMount|Group.2|Take 0|Layer0
+    7400150: DisplayMount|Group.3|Take 0|Layer0
+    7400152: DisplayMount|Group.4|Take 0|Layer0
+    7400154: DisplayMount|Group.5|Take 0|Layer0
+    7400156: DisplayMount|Group|Take 0|Layer0
+    7400158: DisplayMount|Plane|Take 0|Layer0
+    7400160: TrussLegs|DNA|Take 0|Layer0
+    7400162: TrussLegs|Group.1|Take 0|Layer0
+    7400164: TrussLegs|Group.2|Take 0|Layer0
+    7400166: TrussLegs|Group.3|Take 0|Layer0
+    7400168: TrussLegs|Group.4|Take 0|Layer0
+    7400170: TrussLegs|Group.5|Take 0|Layer0
+    7400172: TrussLegs|Group|Take 0|Layer0
+    7400174: TrussLegs|Plane|Take 0|Layer0
+    7400176: TrussCoupling|DNA|Take 0|Layer0
+    7400178: TrussCoupling|Group.1|Take 0|Layer0
+    7400180: TrussCoupling|Group.2|Take 0|Layer0
+    7400182: TrussCoupling|Group.3|Take 0|Layer0
+    7400184: TrussCoupling|Group.4|Take 0|Layer0
+    7400186: TrussCoupling|Group.5|Take 0|Layer0
+    7400188: TrussCoupling|Group|Take 0|Layer0
+    7400190: TrussCoupling|Plane|Take 0|Layer0
+    7400192: Truss|DNA|Take 0|Layer0
+    7400194: Truss|Group.1|Take 0|Layer0
+    7400196: Truss|Group.2|Take 0|Layer0
+    7400198: Truss|Group.3|Take 0|Layer0
+    7400200: Truss|Group.4|Take 0|Layer0
+    7400202: Truss|Group.5|Take 0|Layer0
+    7400204: Truss|Group|Take 0|Layer0
+    7400206: Truss|Plane|Take 0|Layer0
+    7400208: Displays|DNA|Take 0|Layer0
+    7400210: Displays|Group.1|Take 0|Layer0
+    7400212: Displays|Group.2|Take 0|Layer0
+    7400214: Displays|Group.3|Take 0|Layer0
+    7400216: Displays|Group.4|Take 0|Layer0
+    7400218: Displays|Group.5|Take 0|Layer0
+    7400220: Displays|Group|Take 0|Layer0
+    7400222: Displays|Plane|Take 0|Layer0
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

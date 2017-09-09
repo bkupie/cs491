@@ -1,0 +1,122 @@
+fileFormatVersion: 2
+guid: a0c788efcff310a4aac1c06031b4d9ca
+timeCreated: 1492035295
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: A-WALL_curve_thickness96.0, .002
+    100004: Black-MountingBar
+    100006: Black-MountingBar.001
+    100008: Black-MountingBar.002
+    100010: Cube
+    100012: DisplayMount
+    100014: DisplayMount.002
+    100016: Planar-ThinBezelLCD-42in
+    100018: Planar-ThinBezelLCD-42in.002
+    100020: Planar-ThinBezelLCD-42in.005
+    100022: Planar-ThinBezelLCD-42in.007
+    400000: //RootNode
+    400002: A-WALL_curve_thickness96.0, .002
+    400004: Black-MountingBar
+    400006: Black-MountingBar.001
+    400008: Black-MountingBar.002
+    400010: Cube
+    400012: DisplayMount
+    400014: DisplayMount.002
+    400016: Planar-ThinBezelLCD-42in
+    400018: Planar-ThinBezelLCD-42in.002
+    400020: Planar-ThinBezelLCD-42in.005
+    400022: Planar-ThinBezelLCD-42in.007
+    2300000: A-WALL_curve_thickness96.0, .002
+    2300002: Black-MountingBar
+    2300004: Black-MountingBar.001
+    2300006: Black-MountingBar.002
+    2300008: Cube
+    2300010: DisplayMount
+    2300012: DisplayMount.002
+    2300014: Planar-ThinBezelLCD-42in
+    2300016: Planar-ThinBezelLCD-42in.002
+    2300018: Planar-ThinBezelLCD-42in.005
+    2300020: Planar-ThinBezelLCD-42in.007
+    3300000: A-WALL_curve_thickness96.0, .002
+    3300002: Black-MountingBar
+    3300004: Black-MountingBar.001
+    3300006: Black-MountingBar.002
+    3300008: Cube
+    3300010: DisplayMount
+    3300012: DisplayMount.002
+    3300014: Planar-ThinBezelLCD-42in
+    3300016: Planar-ThinBezelLCD-42in.002
+    3300018: Planar-ThinBezelLCD-42in.005
+    3300020: Planar-ThinBezelLCD-42in.007
+    4300000: Cube
+    4300002: Black-MountingBar
+    4300004: DisplayMount.002
+    4300006: Planar-ThinBezelLCD-42in.007
+    4300008: A-WALL_curve_thickness96.0, .002
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
