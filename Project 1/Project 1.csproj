@@ -73,6 +73,15 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
+    <Reference Include="Assembly-UnityScript-firstpass">
+      <HintPath>Library\ScriptAssemblies\Assembly-UnityScript-firstpass.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Project 1.Plugins.csproj">
+      <Project>{230DB919-E77A-81BF-ADA4-0BEBB87580B9}</Project>
+      <Name>Project 1.Plugins</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Barts Items\Scripts\LightControl.cs" />
@@ -244,6 +253,7 @@
   <ItemGroup>
     <None Include="Assets\Barts Items\Custom Made Items\Textures-From.txt" />
     <None Include="Assets\Barts Items\Downloads\Credit.txt" />
+    <None Include="Assets\Barts Items\Downloads\plants\dd\AlphaTest-Bumped.shader" />
     <None Include="Assets\SteamVR\InteractionSystem\Core\Shaders\SeeThru.shader" />
     <None Include="Assets\SteamVR\InteractionSystem\Core\Shaders\Silhouette.shader" />
     <None Include="Assets\SteamVR\InteractionSystem\Hints\Shaders\ControllerButtonHints.shader" />
