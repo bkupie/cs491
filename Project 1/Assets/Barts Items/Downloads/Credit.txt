@@ -1,3 +1,4 @@
+Objects:
 Disco Ball(https://sketchfab.com/models/e4c3b485680843c7a7a827d04ac28743) by araghon007(https://sketchfab.com/araghon007) 
 is licensed under CC Attribution(http://creativecommons.org/licenses/by/4.0/)
 
@@ -13,3 +14,11 @@ Shoes - Vans https://free3d.com/3d-model/vans-74559.html
 Old office props ( unity asset store ) by Jake Sullivan 
 
 Greek-style light fixture - http://ru.renderstuff.com/3d-model-svetilnika-nastennogo-grecheskom-stile-184/ 
+
+Computer / Monitor - https://archive3d.net/?a=download&id=9422aaf7
+
+Speakers - Created by Tyro Smith from http://tf3dm.com/3d-model/stereo-speakers-v10-13099.html
+===========================================
+Sounds:
+AC / Background noise = http://soundbible.com/1508-Background-Noise.html
+Smooth Jazz (Poppers and Prosecco) = http://incompetech.com/music/royalty-free/?genre=Jazz
