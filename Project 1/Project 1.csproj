@@ -84,6 +84,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Barts Items\Downloads\Clock\Scripts\Clock.cs" />
     <Compile Include="Assets\Barts Items\Scripts\LightControl.cs" />
     <Compile Include="Assets\CAVE2-Screen Config\Scripts\DisplayInfo.cs" />
     <Compile Include="Assets\CAVE2-Screen Config\Scripts\ScreenConfigCalc.cs" />
