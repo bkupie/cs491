@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Barts Items\Custom Made Items\Textures-From.txt" />
+    <None Include="Assets\Barts Items\Downloads\Coat Rack\archibase.net.txt" />
     <None Include="Assets\Barts Items\Downloads\Credit.txt" />
     <None Include="Assets\Barts Items\Downloads\plants\dd\AlphaTest-Bumped.shader" />
     <None Include="Assets\SteamVR\InteractionSystem\Core\Shaders\SeeThru.shader" />
