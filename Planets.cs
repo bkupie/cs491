@@ -1,6 +1,6 @@
 ﻿/// Sample Code for CS 491 Virtual And Augmented Reality Course - Fall 2017
 /// written by Andy Johnson
-/// 
+///
 /// makes use of various textures from the celestia motherlode - http://www.celestiamotherlode.net/
 
 using System.Collections;
@@ -22,7 +22,6 @@ public class Planets : MonoBehaviour {
 	float panelXScale = 2.0F;
 	float orbitXScale = 2.0F;
 
-
 	//------------------------------------------------------------------------------------//
 
 	void drawOrbit(string orbitName, float orbitRadius, Color orbitColor, float myWidth, GameObject myOrbits){
@@ -30,7 +29,7 @@ public class Planets : MonoBehaviour {
 		GameObject newOrbit;
 		GameObject orbits;
 
-	
+
 		newOrbit = new GameObject (orbitName);
 		newOrbit.AddComponent<Circle> ();
 		newOrbit.AddComponent<LineRenderer> ();
@@ -47,7 +46,7 @@ public class Planets : MonoBehaviour {
 
 		orbits = myOrbits;
 		newOrbit.transform.parent = orbits.transform;
-	
+
 
 		}
 
@@ -81,7 +80,7 @@ public class Planets : MonoBehaviour {
 			newPlanet.transform.localScale = new Vector3 (planetSize, planetSize, planetSize);
 			newPlanet.transform.parent = newPlanetCenter.transform;
 
-			newPlanetCenter.GetComponent<rotate> ().rotateSpeed = planetSpeed; 
+			newPlanetCenter.GetComponent<rotate> ().rotateSpeed = planetSpeed;
 
 			planetMaterial = new Material (Shader.Find ("Standard"));
 			newPlanet.GetComponent<MeshRenderer> ().material = planetMaterial;
@@ -100,7 +99,7 @@ public class Planets : MonoBehaviour {
 		GameObject newPlanet;
 
 		GameObject sunRelated;
-	
+
 		Material planetMaterial;
 
 		int planetCounter;
@@ -111,7 +110,7 @@ public class Planets : MonoBehaviour {
 			float planetSize = float.Parse (planets [planetCounter, 1]) * 1.0F / 10000.0F;
 			string textureName = planets [planetCounter, 3];
 			string planetName = planets [planetCounter, 4];
-		
+
 			// limit the planets to the width of the side view
 			if ((panelXScale * planetDistance) < panelWidth) {
 
@@ -212,7 +211,7 @@ public class Planets : MonoBehaviour {
 
 		sunRelated = thisStar;
 
-		newSun.GetComponent<rotate> ().rotateSpeed = -0.25F; 
+		newSun.GetComponent<rotate> ().rotateSpeed = -0.25F;
 
 		sunMaterial = new Material (Shader.Find ("Unlit/Texture"));
 		newSun.GetComponent<MeshRenderer> ().material = sunMaterial;
@@ -336,14 +335,14 @@ public class Planets : MonoBehaviour {
 			{ "6133513", "30554",   "0.014", "jupiter",   "b" },
 			{"10920645", "20147",   "0.18", "neptune",  "c" }
 		};
-			
+
 		GameObject allCenter = new GameObject();
 		allCenter.name = "all systems";
 
 
 		var systemOffset = new Vector3 (0, 0, 0);
 		var oneOffset = new Vector3 (0, -30, 0);
-	
+
 		dealWithSystem (sol, solPlanets, systemOffset, allCenter);
 
 		systemOffset += oneOffset;
@@ -354,13 +353,13 @@ public class Planets : MonoBehaviour {
 
 		dealWithSystem (Gliese581, Gliese581Planets, systemOffset, allCenter);
 
-			
+
 		allCenter.transform.localScale = new Vector3 (0.1F, 0.1F, 0.1F);
 	}
 
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 }
