@@ -5,14 +5,15 @@ using System.IO;  // The System.IO namespace contains functions related to loadi
 using System.Collections.Generic; // import the list ability 
 
 [System.Serializable]
-    public class SolarSystem 
+    public class Planet 
     {  
-        public string star;
-        public string system;
-        public string spectral;
+        public int ID; 
+        public string star;      
+        public string system;    
+        public string spectral;      
         public float  temperature;
         public float  distance;
-        public float  x; 
+        public float  x;
         public float  y;
         public float  z;
         public float  radius_Solar;
@@ -20,20 +21,13 @@ using System.Collections.Generic; // import the list ability
         public float  rotation_Period;
         public float  habitable_inner;
         public float  habitable_outer;
-    // public Planet[] planets; // doesn't work properly ATM 
-        public string planets; // temporary until array gets fixed 
-    }
-
-[System.Serializable]
-    public class Planet 
-    {  
-       public string name;
-       public string discovery;
-       public float  distance;
-       public float  radius_Earth;
-       public float  mass_Earth;
-       public float  rotation_Period;
-       public float  orbital_Period;
+        public string p_name;        
+        public string p_discovery;
+        public float  p_distance;
+        public float  p_radius_Earth;
+        public float  p_mass_Earth;
+        public float  p_rotation_Period;
+        public float  p_orbital_Period;  
     }    
 
 [System.Serializable]
@@ -108,17 +102,18 @@ public class JsonParse : MonoBehaviour {
 	private void LoadPlanetJSON()
     {
        // Pass the json to JsonUtility, and tell it to create a GameData object from it
-            SolarSystem[] SolarSystemArray = JsonHelper.FromJson<SolarSystem>(fixJson(jsonText));
+            Planet[] SolarSystem = JsonHelper.FromJson<Planet>(fixJson(jsonText));
             
             // the fallowing is used to make sure everything works propely with the planet.json test file 
              Debug.Log (jsonText);
             
-             Debug.Log (SolarSystemArray);
+             Debug.Log (SolarSystem.Length);
+                int length = SolarSystem.Length;
 
-             Debug.Log (SolarSystemArray[0].star);
-
-             Debug.Log (SolarSystemArray[1].star);
-       
+            for(int i = 0 ; i < length ; i++)
+            {
+              Debug.Log (SolarSystem[i].p_name);   
+            }
     }
 
      
