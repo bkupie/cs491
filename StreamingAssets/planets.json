@@ -1,0 +1,82 @@
+[
+  { 
+    "id": 0,
+    "p_name": "Mercury",
+    "p_discovery": "naked eye",
+    "p_distance": 0.387,
+    "p_radius_Earth": 0.3829,
+    "p_mass_Earth": 0.055,
+    "p_rotation_Period": 58.646,
+    "p_orbital_Period": 87.969
+  },
+  { 
+    "id": 0,
+    "p_name": "Venus",
+    "p_discovery": "naked eye",
+    "p_distance": 0.723,
+    "p_radius_Earth": 0.9499,
+    "p_mass_Earth": 0.815,
+    "p_rotation_Period": -243.025,
+    "p_orbital_Period": 224.701
+  },
+  { 
+    "id": 0,
+    "p_name": "Earth",
+    "p_discovery": "naked eye",
+    "p_distance": 1.0,
+    "p_radius_Earth": 1.0,
+    "p_mass_Earth": 1.0,
+    "p_rotation_Period": 0.997,
+    "p_orbital_Period": 365.256
+  },
+  { 
+    "id": 0,
+    "p_name": "Mars",
+    "p_discovery": "naked eye",
+    "p_distance": 1.523679,
+    "p_radius_Earth": 0.533,
+    "p_mass_Earth": 0.107,
+    "p_rotation_Period": 1.025957,
+    "p_orbital_Period": 686.971
+  },
+  { 
+    "id": 0,
+    "p_name": "Jupiter",
+    "p_discovery": "naked eye",
+    "p_distance": 5.202,
+    "p_radius_Earth": 11.209,
+    "p_mass_Earth": 317.8,
+    "p_rotation_Period": 0.41354167,
+    "p_orbital_Period": 4332.59
+  },
+  { 
+    "id": 0,
+    "p_name": "Saturn",
+    "p_discovery": "naked eye",
+    "p_distance": 9.582,
+    "p_radius_Earth": 9.449,
+    "p_mass_Earth": 95.159,
+    "p_rotation_Period": 0.43958333,
+    "p_orbital_Period": 10759.22
+  },
+  { 
+    "id": 0,
+    "p_name": "Uranus",
+    "p_discovery": "telescope",
+    "p_distance": 19.2184,
+    "p_radius_Earth": 4.007,
+    "p_mass_Earth": 14.536,
+    "p_rotation_Period": -0.718,
+    "p_orbital_Period": 30688.5
+  },
+  { 
+    "id": 0,
+    "p_name": "Neptune",
+    "p_discovery": "telescope",
+    "p_distance": 30.110387,
+    "p_radius_Earth": 3.883,
+    "p_mass_Earth": 17.147,
+    "p_rotation_Period": 0.6713,
+    "p_orbital_Period": 60182.0
+  }
+]

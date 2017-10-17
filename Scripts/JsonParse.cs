@@ -5,9 +5,9 @@ using System.IO;  // The System.IO namespace contains functions related to loadi
 using System.Collections.Generic; // import the list ability 
 
 [System.Serializable]
-    public class Planet 
+    public class SolarSystem
     {  
-        public int ID; 
+        public int ID;
         public string star;      
         public string system;    
         public string spectral;      
@@ -21,6 +21,13 @@ using System.Collections.Generic; // import the list ability
         public float  rotation_Period;
         public float  habitable_inner;
         public float  habitable_outer;
+        public Planet [] systems_planets; 
+    }
+
+[System.Serializable]
+    public class Planet 
+    {  
+        public int ID; 
         public string p_name;        
         public string p_discovery;
         public float  p_distance;
@@ -28,15 +35,36 @@ using System.Collections.Generic; // import the list ability
         public float  p_mass_Earth;
         public float  p_rotation_Period;
         public float  p_orbital_Period;  
+
+        public Planet(int id, string a,string b,float c,float d, float e, float f,float g)
+        {
+            ID = id;
+            p_name = a;        
+            p_discovery = b;
+            p_distance = c;
+            p_radius_Earth = d;
+            p_mass_Earth = e;
+            p_rotation_Period = f;
+            p_orbital_Period = g;
+        }
+
+
     }    
+
+
+
 
 [System.Serializable]
 public class JsonParse : MonoBehaviour {
 
+    private Planet[] Planets;
+    private SolarSystem[] SolarSystems;
     // name of the json file we are using
-	public string gameDataFileName = "exoplanet-archive.json";
+	public string systemsFileName = "solar_systems.json";
+    public string planetsFileName = "planets.json";
     // hold the raw JSON file as text 
-	private string jsonText;
+	private string systemJsonText;
+    private string planetJsonText; 
 
 	// Use this for initialization
 	void Start () {
@@ -44,18 +72,20 @@ public class JsonParse : MonoBehaviour {
         // load the json file 
         // Path.Combine combines strings into a file path
         // Application.StreamingAssets points to Assets/StreamingAssets in the Editor, and the StreamingAssets folder in a build
-         string filePath = Path.Combine(Application.streamingAssetsPath, gameDataFileName);
+         string filePathSystems = Path.Combine(Application.streamingAssetsPath, systemsFileName);
+         string filePathPlanets = Path.Combine(Application.streamingAssetsPath, planetsFileName);
 
-        if(File.Exists(filePath))
+        if(File.Exists(filePathSystems) && File.Exists(filePathPlanets) )
         {   
             Debug.Log("Text file exists");
             // Read the json from the file into a string
-            jsonText = File.ReadAllText(filePath); 
+            systemJsonText = File.ReadAllText(filePathSystems);
+            planetJsonText = File.ReadAllText(filePathPlanets); 
             LoadPlanetJSON();
         }
         else
         {
-            Debug.LogError("Cannot load planet data!");
+            Debug.LogError("Cannot load planet or systems data!");
         }
         
 	}
@@ -63,6 +93,8 @@ public class JsonParse : MonoBehaviour {
 	void Update () {
 
 	}
+
+    
 
     string fixJson(string value)
     {
@@ -99,22 +131,42 @@ public class JsonParse : MonoBehaviour {
         }
     }
 
+
 	private void LoadPlanetJSON()
     {
        // Pass the json to JsonUtility, and tell it to create a GameData object from it
-            Planet[] SolarSystem = JsonHelper.FromJson<Planet>(fixJson(jsonText));
-            
-            // the fallowing is used to make sure everything works propely with the planet.json test file 
-             Debug.Log (jsonText);
-            
-             Debug.Log (SolarSystem.Length);
-                int length = SolarSystem.Length;
+            Planets = JsonHelper.FromJson<Planet>(fixJson(planetJsonText));
+            SolarSystems = JsonHelper.FromJson<SolarSystem>(fixJson(systemJsonText));
 
-            for(int i = 0 ; i < length ; i++)
-            {
-              Debug.Log (SolarSystem[i].p_name);   
-            }
+             
+            CreateProperSystems();
     }
 
-     
+    private void CreateProperSystems()
+    {
+
+        Debug.Log ("Lengths:");
+        int length = Planets.Length;
+        Debug.Log (length);
+        
+        SolarSystems[0].systems_planets = new Planet[length];
+        int planetCounter = 0;
+        int counter = 0;
+        for(int i = 0 ; i < length ; i++)
+        {
+            if(Planets[i].ID == (counter+1) )
+            {
+                counter++;
+                planetCounter = 0;
+            }
+
+            // add the planet to the solar system 
+            SolarSystems[counter].systems_planets[planetCounter] = Planets[i];
+            planetCounter++;
+        
+        }
+
+        Debug.Log (SolarSystems[0].systems_planets[0].p_name);
+    }
+
 }
