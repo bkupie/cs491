@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class PlanetMotion : MonoBehaviour {
 
     LineRenderer orbitPath; // rendered orbit path
@@ -16,19 +18,19 @@ public class PlanetMotion : MonoBehaviour {
 
     public float orbitalPeriod = 5f; // seconds
     public float rotationPeriod = 3f; // seconds
-
+    public float height = 0;
     public bool orbitActive = true;
     public bool rotateActive = true;
 
     public Ellipse ellipse;
 
     void Awake () { // awake gets called before Start
-
+        
         orbitPath = gameObject.AddComponent<LineRenderer> ();
         orbitPath.endWidth = orbitPath.startWidth = .2f;
         orbitPath.material = new Material (Shader.Find ("Particles/Additive"));
-
-        DrawEllipse ();
+        ellipse = new Ellipse(2.0f,2.0f);
+        //DrawEllipse ();
     }
 
     void Start () {
@@ -44,14 +46,14 @@ public class PlanetMotion : MonoBehaviour {
         SetOrbitingPosition ();
     }
 
-    void DrawEllipse () {
-
+    public void DrawEllipse () {
+        
         Vector3[] points = new Vector3[segments + 1];
 
         for (int i = 0; i < segments; i++) {
 
             Vector2 pos = ellipse.Calculate ((float) i / (float) segments);
-            points[i] = new Vector3 (pos[0], 0f, pos[1]);
+            points[i] = new Vector3 (pos[0], height, pos[1]);
         }
 
         points[segments] = points[0]; // set last element equal to first element

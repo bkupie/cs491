@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections;
+using System;
 using System.IO;  // The System.IO namespace contains functions related to loading and saving files
 using System.Collections.Generic; // import the list ability 
+
 
 [System.Serializable]
     public class SolarSystem
@@ -51,11 +52,9 @@ using System.Collections.Generic; // import the list ability
 
     }    
 
-
-
-
 [System.Serializable]
 public class JsonParse : MonoBehaviour {
+
 
     private Planet[] Planets;
     private SolarSystem[] SolarSystems;
@@ -65,6 +64,17 @@ public class JsonParse : MonoBehaviour {
     // hold the raw JSON file as text 
 	private string systemJsonText;
     private string planetJsonText; 
+
+    public float orbitXScale = 1.0f;
+
+    public float planetScale = .1f;
+    public float planetOrbitSpeed = .1f;
+    public float planetRotateSpeed = 10.0f;
+    public float gapBetweenPlanets3d = 1.0f;
+    private GameObject allThreeDimensionalSystems;
+    
+    private GameObject[] fourSystems = new GameObject[4];
+    private int fourSystemsCounter = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -87,12 +97,15 @@ public class JsonParse : MonoBehaviour {
         {
             Debug.LogError("Cannot load planet or systems data!");
         }
-        
 	}
 	// Update is called once per frame
 	void Update () {
 
+        if (Input.GetKeyDown("space"))
+            {int result = createSystemFromID(0);
+            Debug.Log("Result:" + result);}
 	}
+
 
     
 
@@ -165,8 +178,129 @@ public class JsonParse : MonoBehaviour {
             planetCounter++;
         
         }
+        SolarSystem [] temp = SortSystemsDistance();
+   
+        
+    }
 
-        Debug.Log (SolarSystems[0].systems_planets[0].p_name);
+
+    public SolarSystem[] SortSystemsDistance()
+    {
+    SolarSystem [] temp = SolarSystems;
+        Array.Sort(temp,
+    delegate(SolarSystem x, SolarSystem y) 
+    { return x.distance.CompareTo(y.distance); });    
+    return temp;
+
+    }
+
+    public SolarSystem[] SortSystemsTemparture()
+    {
+        SolarSystem [] temp = SolarSystems;
+        Array.Sort(temp,
+    delegate(SolarSystem x, SolarSystem y) 
+    { return x.temperature.CompareTo(y.temperature); });    
+    
+    return temp;
+
+    }
+
+
+    GameObject CreateView(SolarSystem thisSolarSystem)
+	{
+		// based off the values from the solar system, make a 3d VIEW
+		//first the sun 	
+		GameObject theStar;
+        GameObject SolarSystem = new GameObject();
+        SolarSystem.name = thisSolarSystem.system;
+
+		// create the star 
+		theStar = GameObject.CreatePrimitive (PrimitiveType.Sphere);
+		theStar.name = thisSolarSystem.star;
+        Material starMaterial = new Material (Shader.Find ("Unlit/Texture"));
+		theStar.GetComponent<MeshRenderer> ().material = starMaterial;
+        starMaterial.mainTexture = Resources.Load ("gstar") as Texture;
+
+        theStar.transform.parent = SolarSystem.transform;
+        //SolarSystem.transform.parent = allThreeDimensionalSystems.transform;
+        // now we have to go and add each planet :-)
+
+        for(int i = 0 ; i < thisSolarSystem.systems_planets.Length;i++)
+        {
+            float planetSize = thisSolarSystem.systems_planets[i].p_radius_Earth * planetScale;
+            float PlanetOrbitalPeriod = thisSolarSystem.systems_planets[i].p_orbital_Period;
+            float planetDistance = thisSolarSystem.systems_planets[i].p_distance;
+			float planetSpeed = thisSolarSystem.systems_planets[i].p_rotation_Period;
+			
+			string planetName = thisSolarSystem.systems_planets[i].p_name;
+            string textureName = planetName; // for now get picture texture based off name 
+            
+            GameObject planetPivot = new GameObject();
+            GameObject thisPlanet = GameObject.CreatePrimitive (PrimitiveType.Sphere);
+        
+            planetPivot.name = planetName +"_Pivot";
+            thisPlanet.transform.parent = planetPivot.transform;
+            planetPivot.transform.parent = SolarSystem.transform;
+
+            // set planet variables to the planet motion script 
+            planetPivot.AddComponent<PlanetMotion>();
+            planetPivot.GetComponent<PlanetMotion>().ellipse.xAxis = planetDistance ;
+            planetPivot.GetComponent<PlanetMotion>().ellipse.zAxis = planetDistance ;
+            planetPivot.GetComponent<PlanetMotion>().orbitalPeriod = PlanetOrbitalPeriod * planetOrbitSpeed;
+            planetPivot.GetComponent<PlanetMotion>().rotationPeriod = planetSpeed * planetOrbitSpeed; 
+            planetPivot.GetComponent<PlanetMotion>().height = fourSystemsCounter * gapBetweenPlanets3d; 
+            planetPivot.GetComponent<PlanetMotion>().planet = thisPlanet.GetComponent<Transform>();
+            planetPivot.GetComponent<PlanetMotion>().DrawEllipse();
+            
+
+            Material planetMaterial = new Material (Shader.Find ("Standard"));
+			thisPlanet.GetComponent<MeshRenderer>().material = planetMaterial;
+			planetMaterial.mainTexture = Resources.Load(textureName) as Texture;
+
+
+            thisPlanet.transform.localScale = new Vector3 (planetSize, planetSize, planetSize);
+            thisPlanet.transform.position = new Vector3 (0, 0, planetDistance * orbitXScale);
+			
+        }
+
+    return SolarSystem;
+	}
+
+    public int createSystemFromID(int id)
+    {
+        SolarSystem temp = findSolarSystemByID(id);
+        // now that we have our solar system, we add it on top of the other solar systems 
+        
+        // first check the counter
+        if(fourSystemsCounter < 4)
+        {
+            Destroy(fourSystems[fourSystemsCounter]);
+            fourSystems[fourSystemsCounter] = CreateView(temp);
+            fourSystems[fourSystemsCounter].transform.position = new Vector3 (0, fourSystemsCounter * gapBetweenPlanets3d, 0);
+            fourSystemsCounter++;
+            // depending on counter value, that's where we'll move our system 
+        return 1;
+        }
+        else{
+            fourSystemsCounter = 0;
+            Destroy(fourSystems[fourSystemsCounter]);
+            fourSystems[fourSystemsCounter] = CreateView(temp);
+            fourSystems[fourSystemsCounter].transform.position = new Vector3 (0, fourSystemsCounter * gapBetweenPlanets3d, 0);
+            fourSystemsCounter++;
+            
+        }
+        return 0;
+    }
+
+    private SolarSystem findSolarSystemByID(int id)
+    {
+        foreach(SolarSystem system in SolarSystems)
+        {
+            if (system.ID == id)
+            { return system;}
+        }
+
+        return SolarSystems[0]; // send default, your thing wasn't found :-(
     }
 
 }
