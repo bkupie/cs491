@@ -14,15 +14,15 @@ using System.Collections.Generic; // import the list ability
         public string spectral;      
         public float  temperature;
         public float  distance;
-        public float  x;
-        public float  y;
-        public float  z;
         public float  radius_Solar;
         public float  mass_Solar;
         public float  rotation_Period;
+        public float luminosity;
         public float  habitable_inner;
         public float  habitable_outer;
+        public int numPlanets;
         public Planet [] systems_planets; 
+        public int habitable_counter;
     }
 
 [System.Serializable]
@@ -31,25 +31,13 @@ using System.Collections.Generic; // import the list ability
         public int ID; 
         public string p_name;        
         public string p_discovery;
-        public float  p_distance;
+        public string p_discoveryYear;
+        public float  p_semiMajor;
         public float  p_radius_Earth;
         public float  p_mass_Earth;
         public float  p_rotation_Period;
         public float  p_orbital_Period;  
-
-        public Planet(int id, string a,string b,float c,float d, float e, float f,float g)
-        {
-            ID = id;
-            p_name = a;        
-            p_discovery = b;
-            p_distance = c;
-            p_radius_Earth = d;
-            p_mass_Earth = e;
-            p_rotation_Period = f;
-            p_orbital_Period = g;
-        }
-
-
+        public float p_temperature;
     }    
 
 [System.Serializable]
@@ -59,7 +47,7 @@ public class JsonParse : MonoBehaviour {
     private Planet[] Planets;
     private SolarSystem[] SolarSystems;
     // name of the json file we are using
-	public string systemsFileName = "solar_systems.json";
+	public string systemsFileName = "systems.json";
     public string planetsFileName = "planets.json";
     // hold the raw JSON file as text 
 	private string systemJsonText;
@@ -73,9 +61,10 @@ public class JsonParse : MonoBehaviour {
     public float gapBetweenPlanets3d = 1.0f;
     private GameObject allThreeDimensionalSystems;
     
+    public float planetSizeScalingValue = 1.5f;
+    private float changed = 0.0f;
     private GameObject[] fourSystems = new GameObject[4];
     private int fourSystemsCounter = 0;
-
 	// Use this for initialization
 	void Start () {
         
@@ -102,12 +91,56 @@ public class JsonParse : MonoBehaviour {
 	void Update () {
 
         if (Input.GetKeyDown("space"))
-            {int result = createSystemFromID(0);
-            Debug.Log("Result:" + result);}
+
+            {
+                int randomNumber = UnityEngine.Random.Range(0,SolarSystems.Length);
+                int result = createSystemFromID(randomNumber);
+                Debug.Log("Random number was :" + randomNumber);
+            }
+        
+        if(Input.GetKeyDown("z"))
+        {
+                 Debug.Log("Z");
+                 
+                 GameObject[] spheres;
+                    spheres = GameObject.FindGameObjectsWithTag("Planet"); 
+                    // Iterate through them and turn each one off
+                    foreach (GameObject sphere in spheres)
+                    { 
+                        Vector3 temp = new Vector3(
+                        sphere.transform.localScale.x / planetSizeScalingValue,
+                        sphere.transform.localScale.y / planetSizeScalingValue,
+                        sphere.transform.localScale.z / planetSizeScalingValue
+                        );
+                    sphere.transform.localScale = temp;
+                    } 
+                    changed = changed / planetSizeScalingValue;
+                 
+        }
+
+        if(Input.GetKeyDown("x"))
+        {
+             Debug.Log("X");
+             GameObject[] spheres;
+                    spheres = GameObject.FindGameObjectsWithTag("Planet"); 
+                    // Iterate through them and turn each one off
+                    foreach (GameObject sphere in spheres)
+                    { 
+                        Vector3 temp = new Vector3(
+                        sphere.transform.localScale.x * planetSizeScalingValue,
+                        sphere.transform.localScale.y * planetSizeScalingValue,
+                        sphere.transform.localScale.z * planetSizeScalingValue
+                        );
+                    sphere.transform.localScale = temp;
+                    } 
+                    changed *= planetSizeScalingValue;
+        }
 	}
 
 
     
+
+
 
     string fixJson(string value)
     {
@@ -157,22 +190,27 @@ public class JsonParse : MonoBehaviour {
 
     private void CreateProperSystems()
     {
-
-        Debug.Log ("Lengths:");
-        int length = Planets.Length;
-        Debug.Log (length);
-        
-        SolarSystems[0].systems_planets = new Planet[length];
+        int systemsCounter = 0;
         int planetCounter = 0;
         int counter = 0;
+        int length = Planets.Length;
+        Debug.Log ("Lengths:");
+        Debug.Log (length);
+        
+        SolarSystems[counter].systems_planets = new Planet[9];
+       SolarSystems[counter].habitable_counter = 0;
         for(int i = 0 ; i < length ; i++)
         {
-            if(Planets[i].ID == (counter+1) )
+            if(Planets[i].ID > (counter) )
             {
                 counter++;
                 planetCounter = 0;
+                SolarSystems[counter].systems_planets = new Planet[9];
+                SolarSystems[counter].habitable_counter = 0;
             }
 
+            if(Planets[i].p_semiMajor >= SolarSystems[counter].habitable_inner && Planets[i].p_semiMajor <= SolarSystems[counter].habitable_outer )
+            SolarSystems[counter].habitable_counter++;
             // add the planet to the solar system 
             SolarSystems[counter].systems_planets[planetCounter] = Planets[i];
             planetCounter++;
@@ -185,6 +223,26 @@ public class JsonParse : MonoBehaviour {
         
     }
 
+     public SolarSystem[] SortSystemsMostHabitable()
+    {
+    SolarSystem [] temp = SolarSystems;
+        Array.Sort(temp,
+    delegate(SolarSystem x, SolarSystem y) 
+    { return x.habitable_counter.CompareTo(y.habitable_counter);});    
+    return temp;
+
+    }
+
+
+    public SolarSystem[] SortSystemsMostPlanets()
+    {
+    SolarSystem [] temp = SolarSystems;
+        Array.Sort(temp,
+    delegate(SolarSystem x, SolarSystem y) 
+    { return x.numPlanets.CompareTo(y.numPlanets); });    
+    return temp;
+
+    }
 
     public SolarSystem[] SortSystemsDistance()
     {
@@ -204,7 +262,6 @@ public class JsonParse : MonoBehaviour {
     { return x.temperature.CompareTo(y.temperature); });    
     
     return temp;
-
     }
 
 
@@ -214,53 +271,67 @@ public class JsonParse : MonoBehaviour {
 		//first the sun 	
 		GameObject theStar;
         GameObject SolarSystem = new GameObject();
-        SolarSystem.name = thisSolarSystem.system;
+        SolarSystem.name = thisSolarSystem.spectral + " " + thisSolarSystem.ID;
 
 		// create the star 
-		theStar = GameObject.CreatePrimitive (PrimitiveType.Sphere);
+		 float starSize = thisSolarSystem.radius_Solar;
+        theStar = GameObject.CreatePrimitive (PrimitiveType.Sphere);
 		theStar.name = thisSolarSystem.star;
+        theStar.transform.localScale = new Vector3 (starSize + changed, starSize + changed, starSize +changed);
+
         Material starMaterial = new Material (Shader.Find ("Unlit/Texture"));
 		theStar.GetComponent<MeshRenderer> ().material = starMaterial;
+        theStar.tag = "Planet";
         starMaterial.mainTexture = Resources.Load ("gstar") as Texture;
 
         theStar.transform.parent = SolarSystem.transform;
         //SolarSystem.transform.parent = allThreeDimensionalSystems.transform;
         // now we have to go and add each planet :-)
 
-        for(int i = 0 ; i < thisSolarSystem.systems_planets.Length;i++)
+        for(int i = 0 ; i < thisSolarSystem.numPlanets;i++)
         {
+            
             float planetSize = thisSolarSystem.systems_planets[i].p_radius_Earth * planetScale;
             float PlanetOrbitalPeriod = thisSolarSystem.systems_planets[i].p_orbital_Period;
-            float planetDistance = thisSolarSystem.systems_planets[i].p_distance;
+            float planetDistance = thisSolarSystem.systems_planets[i].p_semiMajor;
 			float planetSpeed = thisSolarSystem.systems_planets[i].p_rotation_Period;
 			
 			string planetName = thisSolarSystem.systems_planets[i].p_name;
             string textureName = planetName; // for now get picture texture based off name 
-            
+            Debug.Log(planetName);
             GameObject planetPivot = new GameObject();
             GameObject thisPlanet = GameObject.CreatePrimitive (PrimitiveType.Sphere);
-        
-            planetPivot.name = planetName +"_Pivot";
+            thisPlanet.tag = "Planet";
+            planetPivot.name = planetName +"_Pivot_"+thisSolarSystem.systems_planets[i].ID;
             thisPlanet.transform.parent = planetPivot.transform;
             planetPivot.transform.parent = SolarSystem.transform;
 
+
+            
             // set planet variables to the planet motion script 
             planetPivot.AddComponent<PlanetMotion>();
+            // if we don't know speed of rotation, turn it off
+            if(planetSpeed == 0.0f)
+            {
+                planetPivot.GetComponent<PlanetMotion>().rotateActive = false;
+            }
             planetPivot.GetComponent<PlanetMotion>().ellipse.xAxis = planetDistance ;
             planetPivot.GetComponent<PlanetMotion>().ellipse.zAxis = planetDistance ;
             planetPivot.GetComponent<PlanetMotion>().orbitalPeriod = PlanetOrbitalPeriod * planetOrbitSpeed;
             planetPivot.GetComponent<PlanetMotion>().rotationPeriod = planetSpeed * planetOrbitSpeed; 
             planetPivot.GetComponent<PlanetMotion>().height = fourSystemsCounter * gapBetweenPlanets3d; 
             planetPivot.GetComponent<PlanetMotion>().planet = thisPlanet.GetComponent<Transform>();
+
+
             planetPivot.GetComponent<PlanetMotion>().DrawEllipse();
             
 
             Material planetMaterial = new Material (Shader.Find ("Standard"));
 			thisPlanet.GetComponent<MeshRenderer>().material = planetMaterial;
-			planetMaterial.mainTexture = Resources.Load(textureName) as Texture;
+			//planetMaterial.mainTexture = Resources.Load(textureName) as Texture;
 
 
-            thisPlanet.transform.localScale = new Vector3 (planetSize, planetSize, planetSize);
+            thisPlanet.transform.localScale = new Vector3 (planetSize + changed, planetSize + changed, planetSize + changed);
             thisPlanet.transform.position = new Vector3 (0, 0, planetDistance * orbitXScale);
 			
         }

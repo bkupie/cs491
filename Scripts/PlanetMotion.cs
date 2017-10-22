@@ -27,6 +27,7 @@ public class PlanetMotion : MonoBehaviour {
     void Awake () { // awake gets called before Start
         
         orbitPath = gameObject.AddComponent<LineRenderer> ();
+        orbitPath.GetComponent<LineRenderer> ().useWorldSpace = false;
         orbitPath.endWidth = orbitPath.startWidth = .2f;
         orbitPath.material = new Material (Shader.Find ("Particles/Additive"));
         ellipse = new Ellipse(2.0f,2.0f);
@@ -53,7 +54,7 @@ public class PlanetMotion : MonoBehaviour {
         for (int i = 0; i < segments; i++) {
 
             Vector2 pos = ellipse.Calculate ((float) i / (float) segments);
-            points[i] = new Vector3 (pos[0], height, pos[1]);
+            points[i] = new Vector3 (pos[0], 0, pos[1]);
         }
 
         points[segments] = points[0]; // set last element equal to first element
