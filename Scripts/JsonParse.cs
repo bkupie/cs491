@@ -179,7 +179,9 @@ public class JsonParse : MonoBehaviour {
         
         }
         SolarSystem [] temp = SortSystemsDistance();
-   
+    
+        // our view has to always be visible, create that view 
+        int result = createSystemFromID(0);
         
     }
 
@@ -282,7 +284,7 @@ public class JsonParse : MonoBehaviour {
         return 1;
         }
         else{
-            fourSystemsCounter = 0;
+            fourSystemsCounter = 1;
             Destroy(fourSystems[fourSystemsCounter]);
             fourSystems[fourSystemsCounter] = CreateView(temp);
             fourSystems[fourSystemsCounter].transform.position = new Vector3 (0, fourSystemsCounter * gapBetweenPlanets3d, 0);
