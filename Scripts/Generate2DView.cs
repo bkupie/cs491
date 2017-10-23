@@ -261,7 +261,7 @@ public class Generate2DView : MonoBehaviour
             
         }
 
-        all2DViews.transform.localScale = new Vector3(0.015f, 0.015f, 0.015f);
+        all2DViews.transform.localScale = new Vector3(0.018f, 0.018f, 0.018f);
         all2DViews.transform.localPosition = new Vector3(0, 0, 0);
         all2DViews.transform.eulerAngles = new Vector3(0, 90, 0);
     }
@@ -385,7 +385,7 @@ public class Generate2DView : MonoBehaviour
 
         orbitLine.transform.parent = panelParent.transform;
         orbitLine.transform.localPosition = new Vector3(panelSunSize/2, panelHeight / 3, panelDepth*2);
-        orbitLine.transform.localScale = new Vector3(panelWidth, panelThickness/2, panelThickness / 2);
+        orbitLine.transform.localScale = new Vector3(panelWidth, panelThickness, panelThickness);
 
         // Borders:
         Material borderMaterial;
@@ -745,19 +745,19 @@ public class Generate2DView : MonoBehaviour
                         {
                             newPlanetSize = planetBoxSize;
 
-                            GameObject p = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find("Planets").transform.Find(planet.name).gameObject;
+                            GameObject p = GameObject.Find("All 2D Views").transform.Find(ss[i].star).transform.Find("Planets").transform.Find(planet.name).gameObject;
                             //print(p.name);
                             p.transform.localScale = new Vector3(newPlanetSize, newPlanetSize, panelDepth * 5);
 
-                            GameObject sizeIcon = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find(planet.name + " Box").transform.Find("Size Icon").gameObject;
+                            GameObject sizeIcon = GameObject.Find("All 2D Views").transform.Find(ss[i].star).transform.Find(planet.name + " Box").transform.Find("Size Icon").gameObject;
                             sizeIcon.GetComponent<MeshRenderer>().enabled = true;
                         }
                         else
                         {
-                            GameObject p = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find("Planets").transform.Find(planet.name).gameObject;
+                            GameObject p = GameObject.Find("All 2D Views").transform.Find(ss[i].star).transform.Find("Planets").transform.Find(planet.name).gameObject;
                             p.transform.localScale = new Vector3(newPlanetSize, newPlanetSize, panelDepth * 5);
 
-                            GameObject sizeIcon = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find(planet.name + " Box").transform.Find("Size Icon").gameObject;
+                            GameObject sizeIcon = GameObject.Find("All 2D Views").transform.Find(ss[i].star).transform.Find(planet.name + " Box").transform.Find("Size Icon").gameObject;
                             sizeIcon.GetComponent<MeshRenderer>().enabled = false;
                         }
                     }
@@ -796,19 +796,19 @@ public class Generate2DView : MonoBehaviour
                         if (newSemiMajorAxis > panelWidth / 2)
                         {
                             planet.GetComponent<MeshRenderer>().enabled = false;
-                            GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find(planet.name + " Grey").GetComponent<MeshRenderer>().enabled = true;
+                            GameObject.Find("All 2D Views").transform.Find(ss[i].star).transform.Find(planet.name + " Grey").GetComponent<MeshRenderer>().enabled = true;
 
-                            GameObject orbitText = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find(planet.name + " Orbit Text").gameObject;
+                            GameObject orbitText = GameObject.Find("All 2D Views").transform.Find(ss[i].star).transform.Find(planet.name + " Orbit Text").gameObject;
                             orbitText.GetComponent<MeshRenderer>().enabled = false;
                         }
                         else
                         {
                             planet.GetComponent<MeshRenderer>().enabled = true;
                             planet.transform.localPosition = new Vector3(newSemiMajorAxis, (panelHeight / 3), 0);
-                            GameObject orbitText = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find(planet.name + " Orbit Text").gameObject;
+                            GameObject orbitText = GameObject.Find("All 2D Views").transform.Find(ss[i].star).transform.Find(planet.name + " Orbit Text").gameObject;
                             orbitText.transform.localPosition = new Vector3(newSemiMajorAxis - 0.25f, (panelHeight / 3) + 1, 0);
                             orbitText.GetComponent<MeshRenderer>().enabled = true;
-                            GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find(planet.name + " Grey").GetComponent<MeshRenderer>().enabled = false;
+                            GameObject.Find("All 2D Views").transform.Find(ss[i].star).transform.Find(planet.name + " Grey").GetComponent<MeshRenderer>().enabled = false;
 
                         }
                     }
