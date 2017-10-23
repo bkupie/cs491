@@ -174,7 +174,7 @@ public class Generate2DView : MonoBehaviour
             else if (command == "ST:")
             {
                 Debug.Log("Searching for Star Temperature");
-                float tempToFind = float.Parse(searchQuery.Substring(3).TrimEnd(';')));
+                float tempToFind = float.Parse(searchQuery.Substring(3).TrimEnd(';'));
                 maxSystemsShown = 1;
                 GameObject.Destroy(GameObject.Find("All 2D Views"));
                 List<SolarSystem> queryList = new List<SolarSystem>();
