@@ -72,25 +72,28 @@ public class Generate2DView : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.U))
         {
-            filterPlanets();
+            filterPlanets(1);
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
-            searchSystems();
+            //searchSystems();
         }
     }
 
-    public void searchSystems()
+    public void searchSystems(string category, string searchPhrase)
     {
         ss = jsonscript.SortSystemsMostHabitable();
         Debug.Log(searchQuery);
-        if (searchQuery[searchQuery.Length - 1] == ';')
+
+        searchQuery = searchPhrase;
+
+        if (searchQuery[searchQuery.Length - 1] == '*')
         {
-            string command = searchQuery.Substring(0, 3);
+            string command = category;
             Debug.Log("Command: " + command);
-            if (command == "ID:")
+            if (command == "ID")
             {
-                int idToFind = int.Parse(searchQuery.Substring(3).TrimEnd(';'));
+                int idToFind = int.Parse(searchQuery.TrimEnd('*'));
                 maxSystemsShown = 1;
                 GameObject.Destroy(GameObject.Find("All 2D Views"));
                 for (int i = 0; i < ss.Length; i++)
@@ -105,9 +108,9 @@ public class Generate2DView : MonoBehaviour
                 }
                 create2DView();
             }
-            else if (command == "SN:") //SN:Kepler;
+            else if (command == "Star Name") //SN:Kepler;
             {
-                string starToFind = (searchQuery.Substring(3).TrimEnd(';'));
+                string starToFind = (searchQuery.TrimEnd('*'));
                 maxSystemsShown = 1;
                 GameObject.Destroy(GameObject.Find("All 2D Views"));
                 List<SolarSystem> queryList = new List<SolarSystem>();
@@ -127,10 +130,10 @@ public class Generate2DView : MonoBehaviour
                 ss = queryList.ToArray();
                 create2DView();
             }
-            else if (command == "SY:") // System Type TODO: Doesn't work too well, maybe remove?
+            else if (command == "System Type") // System Type TODO: Doesn't work too well, maybe remove?
             {
                 // TODO: CHECK THIS
-                float typeToFind = float.Parse(searchQuery.Substring(3).TrimEnd(';'));
+                float typeToFind = float.Parse(searchQuery.TrimEnd('*'));
 
                 maxSystemsShown = 1;
                 GameObject.Destroy(GameObject.Find("All 2D Views"));
@@ -153,10 +156,10 @@ public class Generate2DView : MonoBehaviour
                 ss = queryList.ToArray();
                 create2DView();
             }
-            else if (command == "SC:")
+            else if (command == "Spectral Class")
             {
                 Debug.Log("Searching for Spectral Class");
-                string classToFind = (searchQuery.Substring(3).TrimEnd(';'));
+                string classToFind = (searchQuery.TrimEnd('*'));
                 maxSystemsShown = 1;
                 Debug.Log("Searching for " + classToFind);
                 GameObject.Destroy(GameObject.Find("All 2D Views"));
@@ -177,10 +180,10 @@ public class Generate2DView : MonoBehaviour
                 ss = queryList.ToArray();
                 create2DView();
             }
-            else if (command == "ST:")
+            else if (command == "Star Temp.")
             {
                 Debug.Log("Searching for Star Temperature");
-                float tempToFind = float.Parse(searchQuery.Substring(3).TrimEnd(';'));
+                float tempToFind = float.Parse(searchQuery.TrimEnd('*'));
                 maxSystemsShown = 1;
                 GameObject.Destroy(GameObject.Find("All 2D Views"));
                 List<SolarSystem> queryList = new List<SolarSystem>();
@@ -201,15 +204,15 @@ public class Generate2DView : MonoBehaviour
                 ss = queryList.ToArray();
                 create2DView();
             }
-            else if (command == "NP:")
+            else if (command == "Num. of Planets")
             {
                 Debug.Log("Searching for Number of Planets");
             }
-            else if (command == "DM:")
+            else if (command == "Disc. Method")
             {
                 Debug.Log("Searching for Discovery Method");
             }
-            else if (command == "PT:")
+            else if (command == "Planet Temp.")
             {
                 Debug.Log("Searching for Planet Temperature");
             }
@@ -249,7 +252,7 @@ public class Generate2DView : MonoBehaviour
             }
             else
             {
-                systemParent.name = ss[i + curStartIdx].star;
+                systemParent.name = "hhh" + ss[i + curStartIdx].star;
                 systemParent.transform.parent = all2DViews.transform;
 
                 create2DPanel(ss[i + curStartIdx], systemParent);
@@ -261,9 +264,9 @@ public class Generate2DView : MonoBehaviour
             
         }
 
-        all2DViews.transform.localScale = new Vector3(0.015f, 0.015f, 0.015f);
+        all2DViews.transform.localScale = new Vector3(0.018f, 0.018f, 0.018f);
         all2DViews.transform.localPosition = new Vector3(0, 0, 0);
-        all2DViews.transform.eulerAngles = new Vector3(0, 0, 0);
+        all2DViews.transform.eulerAngles = new Vector3(0, 90, 0);
     }
 
     public void updateUniverseView()
@@ -280,7 +283,7 @@ public class Generate2DView : MonoBehaviour
         if (direction == 1)
         {
             curStartIdx += maxSystemsShown;
-            if (curStartIdx > ss.Length)
+            if (curStartIdx + maxSystemsShown > ss.Length)
                 curStartIdx = 0;
         }
         else
@@ -294,10 +297,11 @@ public class Generate2DView : MonoBehaviour
         create2DView();
     }
 
-    public void filterPlanets()
+    public void filterPlanets(int fc)
     {
         GameObject.Destroy(GameObject.Find("All 2D Views"));
 
+        filterCounter = fc;
         switch (filterCounter)
         {
             case 0:
@@ -385,7 +389,7 @@ public class Generate2DView : MonoBehaviour
 
         orbitLine.transform.parent = panelParent.transform;
         orbitLine.transform.localPosition = new Vector3(panelSunSize/2, panelHeight / 3, panelDepth*2);
-        orbitLine.transform.localScale = new Vector3(panelWidth, panelThickness/2, panelThickness / 2);
+        orbitLine.transform.localScale = new Vector3(panelWidth, panelThickness, panelThickness);
 
         // Borders:
         Material borderMaterial;
@@ -745,19 +749,19 @@ public class Generate2DView : MonoBehaviour
                         {
                             newPlanetSize = planetBoxSize;
 
-                            GameObject p = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find("Planets").transform.Find(planet.name).gameObject;
+                            GameObject p = GameObject.Find("All 2D Views").transform.Find(ss[i].star).transform.Find("Planets").transform.Find(planet.name).gameObject;
                             //print(p.name);
                             p.transform.localScale = new Vector3(newPlanetSize, newPlanetSize, panelDepth * 5);
 
-                            GameObject sizeIcon = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find(planet.name + " Box").transform.Find("Size Icon").gameObject;
+                            GameObject sizeIcon = GameObject.Find("All 2D Views").transform.Find(ss[i].star).transform.Find(planet.name + " Box").transform.Find("Size Icon").gameObject;
                             sizeIcon.GetComponent<MeshRenderer>().enabled = true;
                         }
                         else
                         {
-                            GameObject p = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find("Planets").transform.Find(planet.name).gameObject;
+                            GameObject p = GameObject.Find("All 2D Views").transform.Find(ss[i].star).transform.Find("Planets").transform.Find(planet.name).gameObject;
                             p.transform.localScale = new Vector3(newPlanetSize, newPlanetSize, panelDepth * 5);
 
-                            GameObject sizeIcon = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find(planet.name + " Box").transform.Find("Size Icon").gameObject;
+                            GameObject sizeIcon = GameObject.Find("All 2D Views").transform.Find(ss[i].star).transform.Find(planet.name + " Box").transform.Find("Size Icon").gameObject;
                             sizeIcon.GetComponent<MeshRenderer>().enabled = false;
                         }
                     }
@@ -796,19 +800,19 @@ public class Generate2DView : MonoBehaviour
                         if (newSemiMajorAxis > panelWidth / 2)
                         {
                             planet.GetComponent<MeshRenderer>().enabled = false;
-                            GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find(planet.name + " Grey").GetComponent<MeshRenderer>().enabled = true;
+                            GameObject.Find("All 2D Views").transform.Find(ss[i].star).transform.Find(planet.name + " Grey").GetComponent<MeshRenderer>().enabled = true;
 
-                            GameObject orbitText = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find(planet.name + " Orbit Text").gameObject;
+                            GameObject orbitText = GameObject.Find("All 2D Views").transform.Find(ss[i].star).transform.Find(planet.name + " Orbit Text").gameObject;
                             orbitText.GetComponent<MeshRenderer>().enabled = false;
                         }
                         else
                         {
                             planet.GetComponent<MeshRenderer>().enabled = true;
                             planet.transform.localPosition = new Vector3(newSemiMajorAxis, (panelHeight / 3), 0);
-                            GameObject orbitText = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find(planet.name + " Orbit Text").gameObject;
+                            GameObject orbitText = GameObject.Find("All 2D Views").transform.Find(ss[i].star).transform.Find(planet.name + " Orbit Text").gameObject;
                             orbitText.transform.localPosition = new Vector3(newSemiMajorAxis - 0.25f, (panelHeight / 3) + 1, 0);
                             orbitText.GetComponent<MeshRenderer>().enabled = true;
-                            GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find(planet.name + " Grey").GetComponent<MeshRenderer>().enabled = false;
+                            GameObject.Find("All 2D Views").transform.Find(ss[i].star).transform.Find(planet.name + " Grey").GetComponent<MeshRenderer>().enabled = false;
 
                         }
                     }
@@ -900,6 +904,7 @@ public class Generate2DView : MonoBehaviour
         universeParent.name = "Universe";
 
         universeParent.transform.parent = this.gameObject.transform;
+        
 
         for (int i = 0; i < ss.Length; i++)
         {
@@ -925,10 +930,6 @@ public class Generate2DView : MonoBehaviour
             else
             {
                 systemSphere.GetComponent<MeshRenderer>().material.color = new Color(0.5f, 0.5f, 0.5f, 0.5f);
-
-                
-
-
             }
         }
 
@@ -966,9 +967,8 @@ public class Generate2DView : MonoBehaviour
 
         }
 
-        universeParent.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
-        universeParent.transform.localPosition = new Vector3(0, 10, -26);
+        universeParent.transform.localScale = new Vector3(0.005f, 0.005f, 0.005f);
+        universeParent.transform.localPosition = new Vector3(-1.2f, 2f, 0.085f);
         //universeParent.transform.eulerAngles = new Vector3(45, -50, -20);
     }
 }
-

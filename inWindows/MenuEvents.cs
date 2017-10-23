@@ -112,12 +112,16 @@ public class MenuEvents : MonoBehaviour {
 
         Debug.Log ("buttonNearestEarth clicked");
 
+        generateScript.filterPlanets(0);
+
         parseScript.resetView();
     }
 
     public void buttonMostPlanets () {
 
         Debug.Log ("buttonMostPlanets clicked");
+
+        generateScript.filterPlanets(2);
 
         parseScript.resetView();
     }
@@ -126,12 +130,16 @@ public class MenuEvents : MonoBehaviour {
 
         Debug.Log ("buttonHottestStars clicked");
 
+        generateScript.filterPlanets(3);
+
         parseScript.resetView();
     }
 
     public void buttonMostHabitablePlanets () {
 
         Debug.Log ("buttonMostHabitablePlanets clicked");
+
+        generateScript.filterPlanets(1);
 
         parseScript.resetView();
     }
@@ -164,7 +172,7 @@ public class MenuEvents : MonoBehaviour {
         //Debug.Log("pressed enter");
         Debug.Log (searchString);
 
-        generateScript.searchSystems(search_category, searchString);
+        generateScript.searchSystems(this.search_category, this.searchString);
 
     }
 

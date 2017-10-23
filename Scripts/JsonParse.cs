@@ -107,6 +107,8 @@ public class JsonParse : MonoBehaviour {
         SortedByHabit = SortSystemsMostHabitable();
 
         parentSolarSystemGameObject.transform.parent = this.gameObject.transform.GetChild(0);
+        parentSolarSystemGameObject.transform.position = new Vector3 (0, 0, 0);
+
 
 	}
 
@@ -237,7 +239,7 @@ public class JsonParse : MonoBehaviour {
                     changedPlanetSize = changedPlanetSize / planetSizeScalingValue;
         }
 // setting the scale orbit period 
- public   void scaleOrbitPeriodUp()
+ public   void scaleOrbitPeriodDown()
     {
                 GameObject[] pivots;
                     pivots = GameObject.FindGameObjectsWithTag("Pivot"); 
@@ -249,7 +251,7 @@ public class JsonParse : MonoBehaviour {
                     changedOrbitPeriod = changedOrbitPeriod * OrbitPeriodScalingValue; 
     }
 
- public   void scaleOrbitPeriodDown()
+ public   void scaleOrbitPeriodUp()
     {
                 GameObject[] pivots;
                     pivots = GameObject.FindGameObjectsWithTag("Pivot"); 
@@ -290,7 +292,7 @@ public class JsonParse : MonoBehaviour {
 
 // scale the orbit distance between everything 
 
-  public  void scaleOrbitDistanceUp()
+  public  void scaleOrbitDistanceDown()
     {
                 GameObject[] pivots;
                     pivots = GameObject.FindGameObjectsWithTag("Pivot"); 
@@ -316,7 +318,7 @@ public class JsonParse : MonoBehaviour {
 
     }
 
- public void scaleOrbitDistanceDown()
+ public void scaleOrbitDistanceUp()
     {
                 GameObject[] pivots;
                     pivots = GameObject.FindGameObjectsWithTag("Pivot"); 
