@@ -50,7 +50,7 @@ public class JsonParse : MonoBehaviour {
     private Planet[] Planets;
     private SolarSystem[] SolarSystems;
     private GameObject[] fourSystems = new GameObject[4];
-    
+    private GameObject parentSolarSystemGameObject;
     // name of the json file we are using
 	public string systemsFileName = "systems.json";
     public string planetsFileName = "planets.json";
@@ -79,8 +79,9 @@ public class JsonParse : MonoBehaviour {
     private int fourSystemsCounter = 0; // counter for what system we're currently on 
 	// Use this for initialization
 	void Start () {
-        // create the 4 scaling arrays
-
+        parentSolarSystemGameObject = new GameObject();
+        parentSolarSystemGameObject.name = "Main Solar System object";
+        
 
         // load the json file 
         // Path.Combine combines strings into a file path
@@ -474,6 +475,7 @@ public class JsonParse : MonoBehaviour {
 		GameObject theStar;
         GameObject SolarSystem = new GameObject();
         SolarSystem.name = thisSolarSystem.star + " " + thisSolarSystem.ID;
+
 		// create the star 
 		 float starSize = thisSolarSystem.radius_Solar;
         theStar = GameObject.CreatePrimitive (PrimitiveType.Sphere);
@@ -489,6 +491,10 @@ public class JsonParse : MonoBehaviour {
         // makehabitable zone 
         GameObject HabitableInner = new GameObject();
         GameObject HabitableOuter = new GameObject();
+        HabitableInner.transform.parent = SolarSystem.transform;
+        HabitableOuter.transform.parent = SolarSystem.transform;
+        HabitableInner.tag = "Pivot";
+        HabitableOuter.tag = "Pivot";
         // name them 
         HabitableInner.name = thisSolarSystem.star + "_Habitable_Inner";
         HabitableOuter.name = thisSolarSystem.star + "_Habitable_Outter";
@@ -504,6 +510,15 @@ public class JsonParse : MonoBehaviour {
         HabitableOuter.GetComponent<PlanetMotion>().rotateActive = false;
         HabitableInner.GetComponent<PlanetMotion>().orbitActive = false;
         HabitableOuter.GetComponent<PlanetMotion>().orbitActive = false;
+        // change the width and color
+        HabitableOuter.GetComponent<LineRenderer>().SetWidth(0.1f, 0.1f);
+        HabitableInner.GetComponent<LineRenderer>().SetWidth(0.1f, 0.1f);
+        
+        Material habitMat = new Material (Shader.Find ("Standard"));
+        habitMat.mainTexture = Resources.Load("habitable") as Texture;
+        HabitableInner.GetComponent<LineRenderer>().material = habitMat;
+        HabitableOuter.GetComponent<LineRenderer>().material = habitMat;
+        //HabitableInner.GetComponent<LineRenderer>().material =
         // now draw them 
         HabitableInner.GetComponent<PlanetMotion>().DrawEllipse();
         HabitableOuter.GetComponent<PlanetMotion>().DrawEllipse();
@@ -540,6 +555,11 @@ public class JsonParse : MonoBehaviour {
             thisPlanet.transform.localScale = new Vector3 (planetSize * changedPlanetSize, planetSize * changedPlanetSize, planetSize * changedPlanetSize);
             thisPlanet.transform.position = new Vector3 (0, 0, planetDistance * orbitXScale);
         }
+                SolarSystem.transform.parent = parentSolarSystemGameObject.transform;
+                Rigidbody solarSystemRigidBody = SolarSystem.AddComponent<Rigidbody>(); 
+                solarSystemRigidBody.isKinematic = true;
+                solarSystemRigidBody.useGravity = false;
+
         return SolarSystem;
     }
 
@@ -553,6 +573,7 @@ public class JsonParse : MonoBehaviour {
 		//first the sun 	
 		GameObject theStar;
         GameObject SolarSystem = new GameObject();
+        
         SolarSystem.name = thisSolarSystem.spectral + " " + thisSolarSystem.ID;
 
 		// create the star 
@@ -571,6 +592,43 @@ public class JsonParse : MonoBehaviour {
         theStar.transform.parent = SolarSystem.transform;
         //SolarSystem.transform.parent = allThreeDimensionalSystems.transform;
         // now we have to go and add each planet :-)
+         float HabitIn = thisSolarSystem.habitable_inner;
+        float HabitOut = thisSolarSystem.habitable_outer;
+        // makehabitable zone 
+        GameObject HabitableInner = new GameObject();
+        GameObject HabitableOuter = new GameObject();
+        HabitableInner.transform.parent = SolarSystem.transform;
+        HabitableOuter.transform.parent = SolarSystem.transform;
+        HabitableInner.tag = "Pivot";
+        HabitableOuter.tag = "Pivot";
+        // name them 
+        HabitableInner.name = thisSolarSystem.star + "_Habitable_Inner";
+        HabitableOuter.name = thisSolarSystem.star + "_Habitable_Outter";
+        // set them up and give values
+        HabitableInner.AddComponent<PlanetMotion>();
+        HabitableInner.GetComponent<PlanetMotion>().ellipse.xAxis = HabitIn ;
+        HabitableInner.GetComponent<PlanetMotion>().ellipse.zAxis = HabitIn ;
+        HabitableOuter.AddComponent<PlanetMotion>();
+        HabitableOuter.GetComponent<PlanetMotion>().ellipse.xAxis = HabitOut ;
+        HabitableOuter.GetComponent<PlanetMotion>().ellipse.zAxis = HabitOut ;
+        // turn off rotation  and turn off orbit
+        HabitableInner.GetComponent<PlanetMotion>().rotateActive = false;
+        HabitableOuter.GetComponent<PlanetMotion>().rotateActive = false;
+        HabitableInner.GetComponent<PlanetMotion>().orbitActive = false;
+        HabitableOuter.GetComponent<PlanetMotion>().orbitActive = false;
+        // change the width and color
+        HabitableOuter.GetComponent<LineRenderer>().SetWidth(0.1f, 0.1f);
+        HabitableInner.GetComponent<LineRenderer>().SetWidth(0.1f, 0.1f);
+        
+        Material habitMat = new Material (Shader.Find ("Standard"));
+        habitMat.mainTexture = Resources.Load("habitable") as Texture;
+        HabitableInner.GetComponent<LineRenderer>().material = habitMat;
+        HabitableOuter.GetComponent<LineRenderer>().material = habitMat;
+        //HabitableInner.GetComponent<LineRenderer>().material =
+        // now draw them 
+        HabitableInner.GetComponent<PlanetMotion>().DrawEllipse();
+        HabitableOuter.GetComponent<PlanetMotion>().DrawEllipse();
+
 
         for(int i = 0 ; i < thisSolarSystem.numPlanets;i++)
         {
@@ -613,6 +671,13 @@ public class JsonParse : MonoBehaviour {
             thisPlanet.transform.position = new Vector3 (0, 0, planetDistance * orbitXScale);
 			
         }
+
+        Rigidbody solarSystemRigidBody = SolarSystem.AddComponent<Rigidbody>(); 
+        solarSystemRigidBody.isKinematic = true;
+        solarSystemRigidBody.useGravity = false;
+        Debug.Log("HELLO");
+        
+     SolarSystem.transform.parent = parentSolarSystemGameObject.transform;
      return SolarSystem;
 	}
 
