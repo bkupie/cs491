@@ -3,20 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 // will attach official script to parent container of 2d views
 // when slider value changes, get a list of all children (systems) and set scales (sun/planets)
 // container has vector4 (x, y, z, y rotation)
 // use other c# code from unity manual
 // attach light source to head?
 
-
 public class MenuEvents : MonoBehaviour {
-
-    public float scale_planetSize;
-    public float scale_orbitDistance;
-    public float scale_orbitalPeriod;
-    public float scale_rotationPeriod;
 
     public Dropdown dropdown;
     public string search_category;
@@ -27,29 +20,56 @@ public class MenuEvents : MonoBehaviour {
 
     //bool keyboardState = false;
 
-    public void planetSizeUpdate (float value) {
+    public void p_size_buttonUp () {
 
-        this.scale_planetSize = value;
-        Debug.Log (scale_planetSize);
+        Debug.Log ("p_size_buttonUp");
+
     }
 
-    public void orbitDistanceUpdate (float value) {
+    public void p_size_buttonDown () {
 
-        this.scale_orbitDistance = value;
-        Debug.Log (scale_orbitDistance);
+        Debug.Log ("p_size_buttonDown");
+
     }
 
-    public void orbitalPeriodUpdate (float value) {
+    public void orb_dist_buttonUp () {
 
-        this.scale_orbitalPeriod = value;
-        Debug.Log (scale_orbitalPeriod);
+        Debug.Log ("orb_dist_buttonUp");
+
     }
 
-    public void rotationPeriodUpdate (float value) {
+    public void orb_dist_buttonDown () {
 
-        this.scale_rotationPeriod = value;
-        Debug.Log (scale_rotationPeriod);
+        Debug.Log ("orb_dist_buttonDown");
+
     }
+
+    public void orb_period_buttonUp () {
+
+        Debug.Log ("orb_period_buttonUp");
+
+    }
+
+    public void orb_period_buttonDown () {
+
+        Debug.Log ("orb_period_buttonDown");
+
+    }
+
+    public void rot_period_buttonUp () {
+
+        Debug.Log ("rot_period_buttonUp");
+
+    }
+
+    public void rot_period_buttonDown () {
+
+        Debug.Log ("rot_period_buttonDown");
+
+    }
+
+
+
 
     public void buttonNearestEarth () {
 
@@ -85,8 +105,7 @@ public class MenuEvents : MonoBehaviour {
 
         this.keyboardState = value;
 
-        keyboard.SetActive(value);
-
+        keyboard.SetActive (value);
 
         Debug.Log (keyboardState);
     }
@@ -100,6 +119,5 @@ public class MenuEvents : MonoBehaviour {
         //Debug.Log("pressed enter");
         Debug.Log (searchString);
     }
-
 
 }
