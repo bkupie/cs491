@@ -105,9 +105,12 @@ public class JsonParse : MonoBehaviour {
             Debug.LogError("Cannot load planet or systems data!");
         }
         SortedByHabit = SortSystemsMostHabitable();
-        
+
+        parentSolarSystemGameObject.transform.parent = this.gameObject.transform.GetChild(0);
 
 	}
+
+
 	// Update is called once per frame
 	void Update () {
 
@@ -179,13 +182,22 @@ public class JsonParse : MonoBehaviour {
              
         }
 
+        if(Input.GetKeyDown("t"))
+        {
+             Debug.Log("t");
+           resetView();
+             
+        }
         
 	}
 
     public void resetView()
     {
         // reset the counter 
-
+        fourSystemsCounter = 1;
+         Destroy(fourSystems[1]);
+          Destroy(fourSystems[2]);
+           Destroy(fourSystems[3]);
     }
 
 
@@ -289,6 +301,16 @@ public class JsonParse : MonoBehaviour {
                        aPivot.GetComponent<PlanetMotion>().ellipse.xAxis /= OrbitPeriodScalingValue ;
                        aPivot.GetComponent<PlanetMotion>().DrawEllipse();
                        
+
+                       
+                    }
+
+                GameObject[] textBoxes;
+                textBoxes = GameObject.FindGameObjectsWithTag("text3d");
+                   foreach (GameObject text in textBoxes)
+                    { 
+                        text.transform.localPosition = new Vector3 (0, 0, text.transform.localPosition.z / OrbitPeriodScalingValue);
+                        
                     }
                     changedOrbitDistance = changedOrbitDistance / OrbitPeriodScalingValue; 
 
@@ -305,7 +327,17 @@ public class JsonParse : MonoBehaviour {
                        aPivot.GetComponent<PlanetMotion>().ellipse.xAxis *= OrbitPeriodScalingValue ;
                        aPivot.GetComponent<PlanetMotion>().DrawEllipse();
                        
+                       
                     }
+
+                    GameObject[] textBoxes;
+                textBoxes = GameObject.FindGameObjectsWithTag("text3d");
+                   foreach (GameObject text in textBoxes)
+                    { 
+                        text.transform.localPosition = new Vector3 (0, 0, text.transform.localPosition.z * OrbitPeriodScalingValue);
+                        
+                    }
+
                     changedOrbitDistance = changedOrbitDistance * OrbitPeriodScalingValue; 
 
     }
@@ -601,7 +633,26 @@ public class JsonParse : MonoBehaviour {
 			thisPlanet.GetComponent<MeshRenderer>().material = planetMaterial;
             planetMaterial.mainTexture = Resources.Load(planetName) as Texture;
             thisPlanet.transform.localScale = new Vector3 (planetSize * changedPlanetSize, planetSize * changedPlanetSize, planetSize * changedPlanetSize);
-            thisPlanet.transform.position = new Vector3 (0, 0, planetDistance * orbitXScale);
+            thisPlanet.transform.position = new Vector3 (0, 0, planetDistance * OrbitPeriodScalingValue);
+
+
+            // now for each planet to have a text box 
+            GameObject text = new GameObject();
+            TextMesh starTextMesh = text.AddComponent<TextMesh>();
+            starTextMesh.text = "Name:"+planetName +"\nDistance:"+planetDistance +"\nOrbit Period:"+PlanetOrbitalPeriod;
+            starTextMesh.fontSize = 140;
+            starTextMesh.transform.parent = SolarSystem.GetComponent<Transform>();
+            text.transform.localScale = new Vector3 (0.01f,0.01f,0.01f);
+            text.transform.parent = planetPivot.transform;
+            text.transform.localPosition = new Vector3 (0, 0, planetDistance * OrbitPeriodScalingValue);
+            text.name = "TextField";
+            text.tag = "text3d";
+            Rigidbody textRigidBody = text.AddComponent<Rigidbody>();
+            textRigidBody.isKinematic = true;
+            textRigidBody.useGravity = false;
+            textRigidBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY |RigidbodyConstraints.FreezeRotationZ;
+            
+
         }
                 SolarSystem.transform.parent = parentSolarSystemGameObject.transform;
                 Rigidbody solarSystemRigidBody = SolarSystem.AddComponent<Rigidbody>(); 
@@ -623,8 +674,20 @@ public class JsonParse : MonoBehaviour {
 		GameObject theStar;
         GameObject SolarSystem = new GameObject();
         
-        SolarSystem.name = thisSolarSystem.spectral + " " + thisSolarSystem.ID;
 
+        SolarSystem.name = thisSolarSystem.spectral + " " + thisSolarSystem.ID;
+        Debug.Log(".." +thisSolarSystem.system[0]);
+        if(thisSolarSystem.system[0] == '1')
+        {
+            GameObject text = new GameObject();
+            Debug.Log("TWO STARS!!!");
+            TextMesh starTextMesh = text.AddComponent<TextMesh>();
+            starTextMesh.text = "2 Stars";
+            starTextMesh.fontSize = 140;
+            starTextMesh.transform.parent = SolarSystem.GetComponent<Transform>();
+            text.transform.localScale = new Vector3 (0.01f,0.01f,0.01f);
+            text.transform.parent = SolarSystem.transform;
+        }
 		// create the star 
 		 float starSize = thisSolarSystem.radius_Solar;
         theStar = GameObject.CreatePrimitive (PrimitiveType.Sphere);
@@ -739,6 +802,23 @@ public class JsonParse : MonoBehaviour {
             thisPlanet.transform.localScale = new Vector3 (planetSize * changedPlanetSize, planetSize * changedPlanetSize, planetSize * changedPlanetSize);
             thisPlanet.transform.position = new Vector3 (0, 0, planetDistance * orbitXScale);
 			
+            // now for each planet to have a text box 
+            GameObject text = new GameObject();
+            TextMesh starTextMesh = text.AddComponent<TextMesh>();
+            starTextMesh.text = "Name:"+planetName +"\nDistance:"+planetDistance +"\nOrbit Period:"+PlanetOrbitalPeriod;
+            starTextMesh.fontSize = 140;
+            starTextMesh.transform.parent = SolarSystem.GetComponent<Transform>();
+            text.transform.localScale = new Vector3 (0.01f,0.01f,0.01f);
+            text.transform.parent = planetPivot.transform;
+            text.transform.localPosition = new Vector3 (0, 0, planetDistance * orbitXScale);
+            text.name = "TextField";
+            text.tag = "text3d";
+            Rigidbody textRigidBody = text.AddComponent<Rigidbody>();
+            textRigidBody.isKinematic = true;
+            textRigidBody.useGravity = false;
+            textRigidBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY |RigidbodyConstraints.FreezeRotationZ;
+
+
         }
 
         Rigidbody solarSystemRigidBody = SolarSystem.AddComponent<Rigidbody>(); 
@@ -784,6 +864,16 @@ public class JsonParse : MonoBehaviour {
             { return system;}
         }
         return SolarSystems[0]; // send default, your thing wasn't found :-(
+    }
+
+    public SolarSystem findSolarSystemByName( string name)
+    {
+       foreach(SolarSystem system in SolarSystems)
+        {
+            if (system.star == name)
+            { return system;}
+        } 
+         return SolarSystems[0]; // send default, your thing wasn't found :-(
     }
 
 }
