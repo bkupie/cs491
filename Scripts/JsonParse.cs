@@ -855,6 +855,33 @@ public class JsonParse : MonoBehaviour {
         return 0;
     }
 
+ // based off ID value, create a 3D view 
+    public int createSystemFromName(string name)
+    {
+        SolarSystem temp = findSolarSystemByName(name);
+        // now that we have our solar system, we add it on top of the other solar systems 
+        
+        // first check the counter
+        if(fourSystemsCounter < 4)
+        {
+            Destroy(fourSystems[fourSystemsCounter]);
+            fourSystems[fourSystemsCounter] = CreateView(temp);
+            fourSystems[fourSystemsCounter].transform.position = new Vector3 (0, fourSystemsCounter * gapBetweenPlanets3d, 0);
+            fourSystemsCounter++;
+            // depending on counter value, that's where we'll move our system 
+        return 1;
+        }
+        else{
+            fourSystemsCounter = 1;
+            Destroy(fourSystems[fourSystemsCounter]);
+            fourSystems[fourSystemsCounter] = CreateView(temp);
+            fourSystems[fourSystemsCounter].transform.position = new Vector3 (0, fourSystemsCounter * gapBetweenPlanets3d, 0);
+            fourSystemsCounter++;
+        }
+        return 0;
+    }
+
+
     // find solar system based off ID only, if not found return our solar system 
     private SolarSystem findSolarSystemByID(int id)
     {
