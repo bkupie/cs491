@@ -84,7 +84,7 @@ namespace VRTK
         [Tooltip("Determines if the object can be grabbed.")]
         public bool isGrabbable = false;
         [Tooltip("If this is checked then the grab button on the controller needs to be continually held down to keep grabbing. If this is unchecked the grab button toggles the grab action with one button press to grab and another to release.")]
-        public bool holdButtonToGrab = true;
+        public bool holdButtonToGrab = false;
         [Tooltip("If this is checked then the object will stay grabbed to the controller when a teleport occurs. If it is unchecked then the object will be released when a teleport occurs.")]
         public bool stayGrabbedOnTeleport = true;
         [Tooltip("Determines in what situation the object can be dropped by the controller grab button.")]
@@ -101,13 +101,13 @@ namespace VRTK
         [Header("Use Options", order = 3)]
 
         [Tooltip("Determines if the object can be used.")]
-        public bool isUsable = false;
+        public bool isUsable = true;
         [Tooltip("If this is checked then the use button on the controller needs to be continually held down to keep using. If this is unchecked the the use button toggles the use action with one button press to start using and another to stop using.")]
-        public bool holdButtonToUse = true;
+        public bool holdButtonToUse = false;
         [Tooltip("If this is checked the object can be used only if it is currently being grabbed.")]
         public bool useOnlyIfGrabbed = false;
         [Tooltip("If this is checked then when a Base Pointer beam (projected from the controller) hits the interactable object, if the object has `Hold Button To Use` unchecked then whilst the pointer is over the object it will run it's `Using` method. If `Hold Button To Use` is unchecked then the `Using` method will be run when the pointer is deactivated. The world pointer will not throw the `Destination Set` event if it is affecting an interactable object with this setting checked as this prevents unwanted teleporting from happening when using an object with a pointer.")]
-        public bool pointerActivatesUseAction = false;
+        public bool pointerActivatesUseAction = true;
         [Tooltip("If this is set to `Undefined` then the global use alias button will use the object, setting it to any other button will ensure the override button is used to use this specific interactable object.")]
         public VRTK_ControllerEvents.ButtonAlias useOverrideButton = VRTK_ControllerEvents.ButtonAlias.Undefined;
         [Tooltip("Determines which controller can initiate a use action.")]
