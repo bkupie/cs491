@@ -12,6 +12,8 @@ public class PointerInteractPageLeft : VRTK_InteractableObject {
         //rend = GetComponent<Renderer> ();
         //rend.material.shader = Shader.Find ("Specular");
         //rend.material.SetColor ("_SpecColor", Color.red);
+
+        StopUsing(usingObject);
     }
 
     public override void StopUsing (VRTK_InteractUse usingObject) {
