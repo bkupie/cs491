@@ -72,7 +72,7 @@ public class Generate2DView : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.U))
         {
-            filterPlanets();
+            filterPlanets(1);
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
@@ -280,7 +280,7 @@ public class Generate2DView : MonoBehaviour
         if (direction == 1)
         {
             curStartIdx += maxSystemsShown;
-            if (curStartIdx > ss.Length)
+            if (curStartIdx + maxSystemsShown > ss.Length)
                 curStartIdx = 0;
         }
         else
@@ -294,10 +294,11 @@ public class Generate2DView : MonoBehaviour
         create2DView();
     }
 
-    public void filterPlanets()
+    public void filterPlanets(int fc)
     {
         GameObject.Destroy(GameObject.Find("All 2D Views"));
 
+        filterCounter = fc;
         switch (filterCounter)
         {
             case 0:
@@ -900,6 +901,7 @@ public class Generate2DView : MonoBehaviour
         universeParent.name = "Universe";
 
         universeParent.transform.parent = this.gameObject.transform;
+        
 
         for (int i = 0; i < ss.Length; i++)
         {
@@ -925,10 +927,6 @@ public class Generate2DView : MonoBehaviour
             else
             {
                 systemSphere.GetComponent<MeshRenderer>().material.color = new Color(0.5f, 0.5f, 0.5f, 0.5f);
-
-                
-
-
             }
         }
 
@@ -966,8 +964,8 @@ public class Generate2DView : MonoBehaviour
 
         }
 
-        universeParent.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
-        universeParent.transform.localPosition = new Vector3(0, 10, -26);
+        universeParent.transform.localScale = new Vector3(0.005f, 0.005f, 0.005f);
+        universeParent.transform.localPosition = new Vector3(-1.2f, 2f, 0.085f);
         //universeParent.transform.eulerAngles = new Vector3(45, -50, -20);
     }
 }
