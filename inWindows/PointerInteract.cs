@@ -13,6 +13,11 @@ public class PointerInteract : VRTK_InteractableObject {
         //rend.material.shader = Shader.Find ("Specular");
         //rend.material.SetColor ("_SpecColor", Color.red);
 
+        // Debug.Log(this.name);
+
+
+
+
         StopUsing(usingObject);
     }
 
@@ -25,7 +30,7 @@ public class PointerInteract : VRTK_InteractableObject {
         //rend.material.SetColor ("_SpecColor", Color.white);
     }
 
-    protected void Start () {
+    void Start () {
     }
 
     protected override void Update () {

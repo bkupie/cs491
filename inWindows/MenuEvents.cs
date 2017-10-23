@@ -18,11 +18,23 @@ public class MenuEvents : MonoBehaviour {
     public bool keyboardState;
     public GameObject keyboard;
 
+    Generate2DView generateScript;
+
+    void Start() {
+        
+        Debug.Log("start here");
+        generateScript = this.GetComponent<Generate2DView>();
+
+    }
+
+
     //bool keyboardState = false;
 
     public void p_size_buttonUp () {
 
         Debug.Log ("p_size_buttonUp");
+
+        generateScript.changePlanetSize(1);
 
     }
 
@@ -30,23 +42,32 @@ public class MenuEvents : MonoBehaviour {
 
         Debug.Log ("p_size_buttonDown");
 
+        generateScript.changePlanetSize(-1);
+
     }
 
     public void orb_dist_buttonUp () {
 
         Debug.Log ("orb_dist_buttonUp");
 
+        generateScript.changePlanetScale(1);
+
     }
 
     public void orb_dist_buttonDown () {
 
         Debug.Log ("orb_dist_buttonDown");
+    
+        generateScript.changePlanetScale(-1);
+
 
     }
 
     public void orb_period_buttonUp () {
 
         Debug.Log ("orb_period_buttonUp");
+
+
 
     }
 
@@ -118,6 +139,9 @@ public class MenuEvents : MonoBehaviour {
 
         //Debug.Log("pressed enter");
         Debug.Log (searchString);
+
+        //generateScript.searchSystems(search_category, searchString)
+
     }
 
 }
