@@ -489,6 +489,9 @@ public class JsonParse : MonoBehaviour {
         // makehabitable zone 
         GameObject HabitableInner = new GameObject();
         GameObject HabitableOuter = new GameObject();
+        // name them 
+        HabitableInner.name = thisSolarSystem.star + "_Habitable_Inner";
+        HabitableOuter.name = thisSolarSystem.star + "_Habitable_Outter";
         // set them up and give values
         HabitableInner.AddComponent<PlanetMotion>();
         HabitableInner.GetComponent<PlanetMotion>().ellipse.xAxis = HabitIn ;
@@ -496,10 +499,15 @@ public class JsonParse : MonoBehaviour {
         HabitableOuter.AddComponent<PlanetMotion>();
         HabitableOuter.GetComponent<PlanetMotion>().ellipse.xAxis = HabitOut ;
         HabitableOuter.GetComponent<PlanetMotion>().ellipse.zAxis = HabitOut ;
+        // turn off rotation  and turn off orbit
+        HabitableInner.GetComponent<PlanetMotion>().rotateActive = false;
+        HabitableOuter.GetComponent<PlanetMotion>().rotateActive = false;
+        HabitableInner.GetComponent<PlanetMotion>().orbitActive = false;
+        HabitableOuter.GetComponent<PlanetMotion>().orbitActive = false;
         // now draw them 
         HabitableInner.GetComponent<PlanetMotion>().DrawEllipse();
         HabitableOuter.GetComponent<PlanetMotion>().DrawEllipse();
-        
+
 
         for(int i = 0 ; i < thisSolarSystem.numPlanets;i++)
         {
