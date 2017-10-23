@@ -19,11 +19,13 @@ public class MenuEvents : MonoBehaviour {
     public GameObject keyboard;
 
     Generate2DView generateScript;
+    JsonParse parseScript;
 
     void Start() {
         
         Debug.Log("start here");
         generateScript = this.GetComponent<Generate2DView>();
+        parseScript = this.GetComponent<JsonParse>();
 
     }
 
@@ -35,6 +37,7 @@ public class MenuEvents : MonoBehaviour {
         Debug.Log ("p_size_buttonUp");
 
         generateScript.changePlanetSize(1);
+        parseScript.scalePlanetsUp();
 
     }
 
@@ -43,6 +46,7 @@ public class MenuEvents : MonoBehaviour {
         Debug.Log ("p_size_buttonDown");
 
         generateScript.changePlanetSize(-1);
+        parseScript.scalePlanetsDown();
 
     }
 
@@ -50,7 +54,10 @@ public class MenuEvents : MonoBehaviour {
 
         Debug.Log ("orb_dist_buttonUp");
 
+        //generateScript.changePlanetScale(1);
+
         generateScript.changePlanetScale(1);
+        parseScript.scaleOrbitDistanceUp();
 
     }
 
@@ -59,6 +66,7 @@ public class MenuEvents : MonoBehaviour {
         Debug.Log ("orb_dist_buttonDown");
     
         generateScript.changePlanetScale(-1);
+        parseScript.scaleOrbitDistanceDown();
 
 
     }
@@ -66,6 +74,8 @@ public class MenuEvents : MonoBehaviour {
     public void orb_period_buttonUp () {
 
         Debug.Log ("orb_period_buttonUp");
+
+        parseScript.scaleOrbitPeriodUp();
 
 
 
@@ -75,17 +85,23 @@ public class MenuEvents : MonoBehaviour {
 
         Debug.Log ("orb_period_buttonDown");
 
+        parseScript.scaleOrbitPeriodDown();
+
     }
 
     public void rot_period_buttonUp () {
 
         Debug.Log ("rot_period_buttonUp");
 
+        parseScript.scaleRotationPeriodUp();
+
     }
 
     public void rot_period_buttonDown () {
 
         Debug.Log ("rot_period_buttonDown");
+
+        parseScript.scaleRotationPeriodDown();
 
     }
 
@@ -95,21 +111,29 @@ public class MenuEvents : MonoBehaviour {
     public void buttonNearestEarth () {
 
         Debug.Log ("buttonNearestEarth clicked");
+
+        parseScript.resetView();
     }
 
     public void buttonMostPlanets () {
 
         Debug.Log ("buttonMostPlanets clicked");
+
+        parseScript.resetView();
     }
 
     public void buttonHottestStars () {
 
         Debug.Log ("buttonHottestStars clicked");
+
+        parseScript.resetView();
     }
 
     public void buttonMostHabitablePlanets () {
 
         Debug.Log ("buttonMostHabitablePlanets clicked");
+
+        parseScript.resetView();
     }
 
     public void dropdownCategoryUpdate () {
@@ -140,7 +164,7 @@ public class MenuEvents : MonoBehaviour {
         //Debug.Log("pressed enter");
         Debug.Log (searchString);
 
-        //generateScript.searchSystems(search_category, searchString)
+        generateScript.searchSystems(search_category, searchString);
 
     }
 

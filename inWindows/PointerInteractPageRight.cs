@@ -4,6 +4,8 @@ using VRTK;
 public class PointerInteractPageRight : VRTK_InteractableObject {
 
     public Renderer rend;
+    public GameObject parent;
+
 
     public override void StartUsing (VRTK_InteractUse usingObject) {
         base.StartUsing (usingObject);
@@ -12,6 +14,12 @@ public class PointerInteractPageRight : VRTK_InteractableObject {
         //rend = GetComponent<Renderer> ();
         //rend.material.shader = Shader.Find ("Specular");
         //rend.material.SetColor ("_SpecColor", Color.red);
+
+        parent = this.transform.parent.gameObject;
+
+        Generate2DView generateScript = parent.GetComponent<Generate2DView>();
+
+        generateScript.pagePlanets(1);
 
         StopUsing(usingObject);
     }

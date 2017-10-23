@@ -6,6 +6,7 @@ public class PointerInteractPageLeft : VRTK_InteractableObject {
     public Renderer rend;
     public GameObject parent;
 
+
     public override void StartUsing (VRTK_InteractUse usingObject) {
         base.StartUsing (usingObject);
         Debug.Log ("ON");
@@ -18,11 +19,7 @@ public class PointerInteractPageLeft : VRTK_InteractableObject {
 
         Generate2DView generateScript = parent.GetComponent<Generate2DView>();
 
-        generateScript.pagePlanets();
-
-
-
-
+        generateScript.pagePlanets(-1);
 
         StopUsing(usingObject);
     }
@@ -37,7 +34,6 @@ public class PointerInteractPageLeft : VRTK_InteractableObject {
     }
 
     protected void Start () {
-
     }
 
     protected override void Update () {

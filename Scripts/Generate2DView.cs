@@ -76,21 +76,24 @@ public class Generate2DView : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
-            searchSystems();
+            //searchSystems();
         }
     }
 
-    public void searchSystems()
+    public void searchSystems(string cat, string searchPhrase)
     {
+        searchQuery = searchPhrase;
+
         ss = jsonscript.SortSystemsMostHabitable();
         Debug.Log(searchQuery);
         if (searchQuery[searchQuery.Length - 1] == ';')
         {
-            string command = searchQuery.Substring(0, 3);
+            //string command = searchQuery.Substring(0, 3);
+            string command = cat;
             Debug.Log("Command: " + command);
-            if (command == "ID:")
+            if (command == "ID")
             {
-                int idToFind = int.Parse(searchQuery.Substring(3).TrimEnd(';'));
+                int idToFind = int.Parse(searchQuery.TrimEnd(';'));
                 maxSystemsShown = 1;
                 GameObject.Destroy(GameObject.Find("All 2D Views"));
                 for (int i = 0; i < ss.Length; i++)

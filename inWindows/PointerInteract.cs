@@ -17,9 +17,9 @@ public class PointerInteract : VRTK_InteractableObject {
 
         parent = this.transform.root.gameObject;
 
-        Generate2DView generateScript = parent.GetComponent<Generate2DView>();
+        JsonParse parseScript = parent.GetComponent<JsonParse>();
 
-        //generateScript.
+        parseScript.createSystemFromName(this.name);
 
         // Debug.Log(this.name);
 
