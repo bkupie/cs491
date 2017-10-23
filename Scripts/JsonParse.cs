@@ -49,6 +49,8 @@ public class JsonParse : MonoBehaviour {
 
     private Planet[] Planets;
     private SolarSystem[] SolarSystems;
+    private GameObject[] fourSystems = new GameObject[4];
+    
     // name of the json file we are using
 	public string systemsFileName = "systems.json";
     public string planetsFileName = "planets.json";
@@ -70,32 +72,14 @@ public class JsonParse : MonoBehaviour {
     public float gapBetweenPlanets3d = 1.0f;
     private GameObject allThreeDimensionalSystems;
 
-
     private float changedRotationPeriod = 1.0f;
     private float changedOrbitDistance = 1.0f;
     private float changedOrbitPeriod = 1.0f;
-    private float changedPlanetSize = 0.1f;
-
-    // arrays to keep track of sizes for the planet sizes 
-    private float[] OrbitPeriodArray;
-    private float[] RotationPeriodArray;
-    private float[] OrbitDistanceArray;
-    private float[] PlanetSizeArray;
-
-    
-
-    private GameObject[] fourSystems = new GameObject[4];
-    private int fourSystemsCounter = 0;
+    private float changedPlanetSize = 0.1f;     // start out being small 
+    private int fourSystemsCounter = 0; // counter for what system we're currently on 
 	// Use this for initialization
 	void Start () {
         // create the 4 scaling arrays
-
-    OrbitPeriodArray = new float[100];
-    RotationPeriodArray = new float[100];
-    OrbitDistanceArray = new float[100];
-    PlanetSizeArray = new float[100];
-
-    
 
 
         // load the json file 
@@ -156,10 +140,38 @@ public class JsonParse : MonoBehaviour {
              scaleOrbitPeriodDown();
              
         }
+
+        if(Input.GetKeyDown("b"))
+        {
+             Debug.Log("b");
+            scaleRotationPeriodUp();
+             
+        }
+
+        if(Input.GetKeyDown("n"))
+        {
+             Debug.Log("n");
+            scaleRotationPeriodDown();
+             
+        }
+
+        if(Input.GetKeyDown("k"))
+        {
+             Debug.Log("k");
+             scaleOrbitDistanceUp();
+             
+        }
+
+        if(Input.GetKeyDown("l"))
+        {
+             Debug.Log("l");
+             scaleOrbitDistanceDown();
+             
+        }
+
         
 	}
-
-
+// changing size of the planets 
     void scalePlanetsUp()
     {
         GameObject[] spheres;
@@ -170,8 +182,7 @@ public class JsonParse : MonoBehaviour {
                         Vector3 temp = new Vector3(
                         sphere.transform.localScale.x * planetSizeScalingValue,
                         sphere.transform.localScale.y * planetSizeScalingValue,
-                        sphere.transform.localScale.z * planetSizeScalingValue
-                        );
+                        sphere.transform.localScale.z * planetSizeScalingValue);
                     sphere.transform.localScale = temp;
                     } 
                     changedPlanetSize = changedPlanetSize * planetSizeScalingValue;
@@ -179,7 +190,6 @@ public class JsonParse : MonoBehaviour {
     
     void scalePlanetsDown()
     {
-                 
                  GameObject[] spheres;
                     spheres = GameObject.FindGameObjectsWithTag("Planet"); 
                     // Iterate through them and turn each one off
@@ -188,14 +198,13 @@ public class JsonParse : MonoBehaviour {
                         Vector3 temp = new Vector3(
                         sphere.transform.localScale.x / planetSizeScalingValue,
                         sphere.transform.localScale.y / planetSizeScalingValue,
-                        sphere.transform.localScale.z / planetSizeScalingValue
-                        );
+                        sphere.transform.localScale.z / planetSizeScalingValue);
+
                     sphere.transform.localScale = temp;
                     } 
                     changedPlanetSize = changedPlanetSize / planetSizeScalingValue;
-                 
         }
-
+// setting the scale orbit period 
     void scaleOrbitPeriodUp()
     {
                 GameObject[] pivots;
@@ -220,6 +229,66 @@ public class JsonParse : MonoBehaviour {
                     changedOrbitPeriod = changedOrbitPeriod / OrbitPeriodScalingValue; 
     }
 
+
+// scale rotational period 
+     void scaleRotationPeriodUp()
+    {
+                GameObject[] pivots;
+                    pivots = GameObject.FindGameObjectsWithTag("Pivot"); 
+                    // Iterate through them and turn each one off
+                    foreach (GameObject aPivot in pivots)
+                    { 
+                       aPivot.GetComponent<PlanetMotion>().rotationPeriod = aPivot.GetComponent<PlanetMotion>().rotationPeriod / RotationPeriodScalingValue; 
+                    }
+                    changedRotationPeriod = changedRotationPeriod / RotationPeriodScalingValue; 
+    }
+
+    void scaleRotationPeriodDown()
+    {
+                GameObject[] pivots;
+                    pivots = GameObject.FindGameObjectsWithTag("Pivot"); 
+                    // Iterate through them and turn each one off
+                    foreach (GameObject aPivot in pivots)
+                    { 
+                       aPivot.GetComponent<PlanetMotion>().rotationPeriod = aPivot.GetComponent<PlanetMotion>().rotationPeriod * RotationPeriodScalingValue; 
+                    }
+                    changedRotationPeriod = changedRotationPeriod * RotationPeriodScalingValue; 
+    }
+
+
+// scale the orbit distance between everything 
+
+    void scaleOrbitDistanceUp()
+    {
+                GameObject[] pivots;
+                    pivots = GameObject.FindGameObjectsWithTag("Pivot"); 
+                    // Iterate through them and turn each one off
+                    foreach (GameObject aPivot in pivots)
+                    { 
+                       aPivot.GetComponent<PlanetMotion>().ellipse.zAxis /= OrbitPeriodScalingValue ;
+                       aPivot.GetComponent<PlanetMotion>().ellipse.xAxis /= OrbitPeriodScalingValue ;
+                       aPivot.GetComponent<PlanetMotion>().DrawEllipse();
+                       
+                    }
+                    changedOrbitDistance = changedOrbitDistance / OrbitPeriodScalingValue; 
+
+    }
+
+ void scaleOrbitDistanceDown()
+    {
+                GameObject[] pivots;
+                    pivots = GameObject.FindGameObjectsWithTag("Pivot"); 
+                    // Iterate through them and turn each one off
+                    foreach (GameObject aPivot in pivots)
+                    { 
+                       aPivot.GetComponent<PlanetMotion>().ellipse.zAxis *= OrbitPeriodScalingValue ;
+                       aPivot.GetComponent<PlanetMotion>().ellipse.xAxis *= OrbitPeriodScalingValue ;
+                       aPivot.GetComponent<PlanetMotion>().DrawEllipse();
+                       
+                    }
+                    changedOrbitDistance = changedOrbitDistance * OrbitPeriodScalingValue; 
+
+    }
 
 
 
@@ -269,6 +338,7 @@ public class JsonParse : MonoBehaviour {
             CreateProperSystems();
     }
 
+// this will move all the planets into the planet arrays for each solar system 
     private void CreateProperSystems()
     {
         int systemsCounter = 0;
@@ -304,34 +374,33 @@ public class JsonParse : MonoBehaviour {
         
     }
 
+// sorting functions
      public SolarSystem[] SortSystemsMostHabitable()
     {
-    SolarSystem [] temp = SolarSystems;
+        SolarSystem [] temp = SolarSystems;
         Array.Sort(temp,
-    delegate(SolarSystem x, SolarSystem y) 
-    { return x.habitable_counter.CompareTo(y.habitable_counter);});    
-    return temp;
-
+        delegate(SolarSystem x, SolarSystem y) 
+        { return x.habitable_counter.CompareTo(y.habitable_counter);});    
+        return temp;
     }
 
 
     public SolarSystem[] SortSystemsMostPlanets()
     {
-    SolarSystem [] temp = SolarSystems;
+        SolarSystem [] temp = SolarSystems;
         Array.Sort(temp,
-    delegate(SolarSystem x, SolarSystem y) 
-    { return y.numPlanets.CompareTo(x.numPlanets); });    
-    return temp;
-
+        delegate(SolarSystem x, SolarSystem y) 
+        { return y.numPlanets.CompareTo(x.numPlanets); });    
+        return temp;
     }
 
     public SolarSystem[] SortSystemsDistance()
     {
-    SolarSystem [] temp = SolarSystems;
+        SolarSystem [] temp = SolarSystems;
         Array.Sort(temp,
-    delegate(SolarSystem x, SolarSystem y) 
-    { return x.distance.CompareTo(y.distance); });    
-    return temp;
+         delegate(SolarSystem x, SolarSystem y) 
+        { return x.distance.CompareTo(y.distance); });    
+        return temp;
 
     }
 
@@ -339,10 +408,9 @@ public class JsonParse : MonoBehaviour {
     {
         SolarSystem [] temp = SolarSystems;
         Array.Sort(temp,
-    delegate(SolarSystem x, SolarSystem y) 
-    { return x.temperature.CompareTo(y.temperature); });    
-    
-    return temp;
+        delegate(SolarSystem x, SolarSystem y) 
+        { return x.temperature.CompareTo(y.temperature); });    
+        return temp;
     }
 
     private string getStarTexture(float temperature)
@@ -396,8 +464,9 @@ public class JsonParse : MonoBehaviour {
                 return "neptune";
             else
                 return "pluto";
-        }
+    }
 
+    // main function to create our solar system, only done once and specfic to our system 
     GameObject CreateOurSolarSystem(SolarSystem thisSolarSystem)
     {
         // based off the values from the solar system, make a 3d VIEW
@@ -415,6 +484,23 @@ public class JsonParse : MonoBehaviour {
         starMaterial.mainTexture = Resources.Load ("sol") as Texture;
         theStar.transform.parent = SolarSystem.transform;
 
+        float HabitIn = thisSolarSystem.habitable_inner;
+        float HabitOut = thisSolarSystem.habitable_outer;
+        // makehabitable zone 
+        GameObject HabitableInner = new GameObject();
+        GameObject HabitableOuter = new GameObject();
+        // set them up and give values
+        HabitableInner.AddComponent<PlanetMotion>();
+        HabitableInner.GetComponent<PlanetMotion>().ellipse.xAxis = HabitIn ;
+        HabitableInner.GetComponent<PlanetMotion>().ellipse.zAxis = HabitIn ;
+        HabitableOuter.AddComponent<PlanetMotion>();
+        HabitableOuter.GetComponent<PlanetMotion>().ellipse.xAxis = HabitOut ;
+        HabitableOuter.GetComponent<PlanetMotion>().ellipse.zAxis = HabitOut ;
+        // now draw them 
+        HabitableInner.GetComponent<PlanetMotion>().DrawEllipse();
+        HabitableOuter.GetComponent<PlanetMotion>().DrawEllipse();
+        
+
         for(int i = 0 ; i < thisSolarSystem.numPlanets;i++)
         {
             float planetSize = thisSolarSystem.systems_planets[i].p_radius_Earth * planetSizeScalingValue;
@@ -428,7 +514,7 @@ public class JsonParse : MonoBehaviour {
             GameObject thisPlanet = GameObject.CreatePrimitive (PrimitiveType.Sphere);
             thisPlanet.tag = "Planet";
             planetPivot.tag = "Pivot";
-            planetPivot.name = planetName +"_Pivot_"+thisSolarSystem.systems_planets[i].ID;
+            planetPivot.name = planetName +"_Pivot_" + thisSolarSystem.systems_planets[i].ID;
             thisPlanet.transform.parent = planetPivot.transform;
             planetPivot.transform.parent = SolarSystem.transform;
             // set planet variables to the planet motion script 
@@ -449,6 +535,7 @@ public class JsonParse : MonoBehaviour {
         return SolarSystem;
     }
 
+    // create all the other systems 
     GameObject CreateView(SolarSystem thisSolarSystem)
 	{   
         // if this our solar system 
@@ -518,9 +605,10 @@ public class JsonParse : MonoBehaviour {
             thisPlanet.transform.position = new Vector3 (0, 0, planetDistance * orbitXScale);
 			
         }
-    return SolarSystem;
+     return SolarSystem;
 	}
 
+    // based off ID value, create a 3D view 
     public int createSystemFromID(int id)
     {
         SolarSystem temp = findSolarSystemByID(id);
@@ -546,6 +634,7 @@ public class JsonParse : MonoBehaviour {
         return 0;
     }
 
+    // find solar system based off ID only, if not found return our solar system 
     private SolarSystem findSolarSystemByID(int id)
     {
         foreach(SolarSystem system in SolarSystems)
