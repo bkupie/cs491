@@ -13,8 +13,8 @@
     	"mass_Solar": 1.0,
     	"rotation_Period": 25.38,
 	"luminosity": 1.0,
-    	"habitable_inner": 0.95,
-    	"habitable_outer": 1.4,
+    	"habitable_Inner": 0.95,
+    	"habitable_Outer": 1.4,
 	"numPlanets": 8
     },
     {
@@ -31,8 +31,8 @@
         "mass_Solar": 1.54, 
         "rotation_Period": 0.0, 
         "luminosity": 14.550615, 
-        "habitable_Inner": 13.823084249999999, 
-        "habitable_Outer": 20.370860999999998, 
+        "habitable_Inner": 13.823084, 
+        "habitable_Outer": 20.370861, 
         "numPlanets": 2
     }, 
     {

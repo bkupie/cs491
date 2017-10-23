@@ -21,8 +21,8 @@ using System.Collections.Generic; // import the list ability
         public float  mass_Solar;
         public float  rotation_Period;
         public float luminosity;
-        public float  habitable_inner;
-        public float  habitable_outer;
+        public float  habitable_Inner;
+        public float  habitable_Outer;
         public int numPlanets;
         public Planet [] systems_planets; 
         public int habitable_counter;
@@ -68,6 +68,8 @@ public class JsonParse : MonoBehaviour {
     public float RotationPeriodScalingValue = 1.1f;
     public float OrbitDistanceScalingValue = 1.1f;
     public float OrbitPeriodScalingValue = 1.1f;
+
+    public GameObject exclemationMark; 
     // distance between y distance 
     public float gapBetweenPlanets3d = 1.0f;
     private GameObject allThreeDimensionalSystems;
@@ -78,6 +80,8 @@ public class JsonParse : MonoBehaviour {
     private float changedPlanetSize = 0.1f;     // start out being small 
     private int fourSystemsCounter = 0; // counter for what system we're currently on 
 	// Use this for initialization
+    private int test = 0;
+    private SolarSystem[] SortedByHabit; 
 	void Start () {
         parentSolarSystemGameObject = new GameObject();
         parentSolarSystemGameObject.name = "Main Solar System object";
@@ -100,7 +104,8 @@ public class JsonParse : MonoBehaviour {
         {
             Debug.LogError("Cannot load planet or systems data!");
         }
-
+        SortedByHabit = SortSystemsMostHabitable();
+        
 
 	}
 	// Update is called once per frame
@@ -109,9 +114,13 @@ public class JsonParse : MonoBehaviour {
         if (Input.GetKeyDown("space"))
 
             {
-                int randomNumber = UnityEngine.Random.Range(0,SolarSystems.Length);
-                int result = createSystemFromID(randomNumber);
-                Debug.Log("Random number was :" + randomNumber);
+                int result = createSystemFromID(SortedByHabit[test].ID);
+                test++;
+                Debug.Log(SortedByHabit[test].habitable_counter + " System: " + SortedByHabit[test].ID );
+                // below is the randomization of planets completly 
+                // int randomNumber = UnityEngine.Random.Range(0,SolarSystems.Length);
+                // int result = createSystemFromID(randomNumber);
+                // Debug.Log("Random number was :" + randomNumber);
             }
         
         if(Input.GetKeyDown("z"))
@@ -352,8 +361,10 @@ public class JsonParse : MonoBehaviour {
        SolarSystems[counter].habitable_counter = 0;
         for(int i = 0 ; i < length ; i++)
         {
+            
             if(Planets[i].ID > (counter) )
             {   
+
                 SolarSystems[counter].numPlanets = planetCounter;
                 counter++;
                 planetCounter = 0;
@@ -361,11 +372,12 @@ public class JsonParse : MonoBehaviour {
                 SolarSystems[counter].habitable_counter = 0;
             }
 
-            if(Planets[i].p_semiMajor >= SolarSystems[counter].habitable_inner && Planets[i].p_semiMajor <= SolarSystems[counter].habitable_outer )
+            if(Planets[i].p_semiMajor >= SolarSystems[counter].habitable_Inner && Planets[i].p_semiMajor <= SolarSystems[counter].habitable_Outer )
             SolarSystems[counter].habitable_counter++;
             // add the planet to the solar system 
             SolarSystems[counter].systems_planets[planetCounter] = Planets[i];
             planetCounter++;
+
         
         }
         SolarSystem [] temp = SortSystemsDistance();
@@ -381,7 +393,7 @@ public class JsonParse : MonoBehaviour {
         SolarSystem [] temp = SolarSystems;
         Array.Sort(temp,
         delegate(SolarSystem x, SolarSystem y) 
-        { return x.habitable_counter.CompareTo(y.habitable_counter);});    
+        { return y.habitable_counter.CompareTo(x.habitable_counter);});    
         return temp;
     }
 
@@ -400,7 +412,7 @@ public class JsonParse : MonoBehaviour {
         SolarSystem [] temp = SolarSystems;
         Array.Sort(temp,
          delegate(SolarSystem x, SolarSystem y) 
-        { return x.distance.CompareTo(y.distance); });    
+        { return y.distance.CompareTo(x.distance); });    
         return temp;
 
     }
@@ -410,7 +422,7 @@ public class JsonParse : MonoBehaviour {
         SolarSystem [] temp = SolarSystems;
         Array.Sort(temp,
         delegate(SolarSystem x, SolarSystem y) 
-        { return x.temperature.CompareTo(y.temperature); });    
+        { return y.temperature.CompareTo(x.temperature); });    
         return temp;
     }
 
@@ -486,8 +498,9 @@ public class JsonParse : MonoBehaviour {
         starMaterial.mainTexture = Resources.Load ("sol") as Texture;
         theStar.transform.parent = SolarSystem.transform;
 
-        float HabitIn = thisSolarSystem.habitable_inner;
-        float HabitOut = thisSolarSystem.habitable_outer;
+        float HabitIn = thisSolarSystem.habitable_Inner;
+        float HabitOut = thisSolarSystem.habitable_Outer;
+        
         // makehabitable zone 
         GameObject HabitableInner = new GameObject();
         GameObject HabitableOuter = new GameObject();
@@ -518,7 +531,6 @@ public class JsonParse : MonoBehaviour {
         habitMat.mainTexture = Resources.Load("habitable") as Texture;
         HabitableInner.GetComponent<LineRenderer>().material = habitMat;
         HabitableOuter.GetComponent<LineRenderer>().material = habitMat;
-        //HabitableInner.GetComponent<LineRenderer>().material =
         // now draw them 
         HabitableInner.GetComponent<PlanetMotion>().DrawEllipse();
         HabitableOuter.GetComponent<PlanetMotion>().DrawEllipse();
@@ -563,12 +575,13 @@ public class JsonParse : MonoBehaviour {
         return SolarSystem;
     }
 
+    
     // create all the other systems 
     GameObject CreateView(SolarSystem thisSolarSystem)
 	{   
         // if this our solar system 
-        if(thisSolarSystem.ID == 0)
-            { return CreateOurSolarSystem(thisSolarSystem); }
+       // if(thisSolarSystem.ID == 0)
+       //     { return CreateOurSolarSystem(thisSolarSystem); }
 		// based off the values from the solar system, make a 3d VIEW
 		//first the sun 	
 		GameObject theStar;
@@ -580,20 +593,31 @@ public class JsonParse : MonoBehaviour {
 		 float starSize = thisSolarSystem.radius_Solar;
         theStar = GameObject.CreatePrimitive (PrimitiveType.Sphere);
 		theStar.name = thisSolarSystem.star;
+        if(starSize > 2)
+        {
+            // create the exclemation mark, and down size 
+            GameObject markClone ;
+            
+            markClone = (GameObject) Instantiate(exclemationMark, new Vector3(0, 0, 2), Quaternion.identity);
+
+            markClone.transform.parent = SolarSystem.transform;
+            starSize = 2;
+        
+        }
+
         theStar.transform.localScale = new Vector3 (starSize * 0.7f, starSize * 0.7f, starSize * 0.7f);
+        
         // get the texture name of the star 
         string textureNameStar = getStarTexture(thisSolarSystem.temperature);
-        if(thisSolarSystem.ID == 0)
-        { textureNameStar = "sol";}
+
         Material starMaterial = new Material (Shader.Find ("Unlit/Texture"));
 		theStar.GetComponent<MeshRenderer> ().material = starMaterial;
         starMaterial.mainTexture = Resources.Load (textureNameStar) as Texture;
 
         theStar.transform.parent = SolarSystem.transform;
-        //SolarSystem.transform.parent = allThreeDimensionalSystems.transform;
-        // now we have to go and add each planet :-)
-         float HabitIn = thisSolarSystem.habitable_inner;
-        float HabitOut = thisSolarSystem.habitable_outer;
+        float HabitIn = thisSolarSystem.habitable_Inner;
+        float HabitOut = thisSolarSystem.habitable_Outer;
+        Debug.Log("In " + HabitIn + " Out " + HabitOut);
         // makehabitable zone 
         GameObject HabitableInner = new GameObject();
         GameObject HabitableOuter = new GameObject();
@@ -611,6 +635,19 @@ public class JsonParse : MonoBehaviour {
         HabitableOuter.AddComponent<PlanetMotion>();
         HabitableOuter.GetComponent<PlanetMotion>().ellipse.xAxis = HabitOut ;
         HabitableOuter.GetComponent<PlanetMotion>().ellipse.zAxis = HabitOut ;
+        // give them fake planets so they happy...
+        GameObject fakePlanet1 = GameObject.CreatePrimitive (PrimitiveType.Sphere);
+        GameObject fakePlanet2 = GameObject.CreatePrimitive (PrimitiveType.Sphere);
+
+        fakePlanet1.GetComponent<MeshRenderer>().enabled = false;
+        fakePlanet2.GetComponent<MeshRenderer>().enabled = false;
+
+        fakePlanet1.transform.parent = HabitableInner.transform;
+        fakePlanet2.transform.parent = HabitableOuter.transform;
+
+        HabitableInner.GetComponent<PlanetMotion>().planet = fakePlanet1.GetComponent<Transform>();
+        HabitableOuter.GetComponent<PlanetMotion>().planet = fakePlanet2.GetComponent<Transform>();
+
         // turn off rotation  and turn off orbit
         HabitableInner.GetComponent<PlanetMotion>().rotateActive = false;
         HabitableOuter.GetComponent<PlanetMotion>().rotateActive = false;
@@ -624,11 +661,9 @@ public class JsonParse : MonoBehaviour {
         habitMat.mainTexture = Resources.Load("habitable") as Texture;
         HabitableInner.GetComponent<LineRenderer>().material = habitMat;
         HabitableOuter.GetComponent<LineRenderer>().material = habitMat;
-        //HabitableInner.GetComponent<LineRenderer>().material =
         // now draw them 
         HabitableInner.GetComponent<PlanetMotion>().DrawEllipse();
         HabitableOuter.GetComponent<PlanetMotion>().DrawEllipse();
-
 
         for(int i = 0 ; i < thisSolarSystem.numPlanets;i++)
         {
@@ -655,8 +690,8 @@ public class JsonParse : MonoBehaviour {
             {
                 planetPivot.GetComponent<PlanetMotion>().rotateActive = false;
             }
-            planetPivot.GetComponent<PlanetMotion>().ellipse.xAxis = planetDistance ;
-            planetPivot.GetComponent<PlanetMotion>().ellipse.zAxis = planetDistance ;
+            planetPivot.GetComponent<PlanetMotion>().ellipse.xAxis = planetDistance * OrbitDistanceScalingValue;
+            planetPivot.GetComponent<PlanetMotion>().ellipse.zAxis = planetDistance * OrbitDistanceScalingValue;
             planetPivot.GetComponent<PlanetMotion>().orbitalPeriod = PlanetOrbitalPeriod * planetOrbitSpeed * changedOrbitPeriod;
             planetPivot.GetComponent<PlanetMotion>().rotationPeriod = planetSpeed * planetRotateSpeed * changedRotationPeriod; 
             planetPivot.GetComponent<PlanetMotion>().height = fourSystemsCounter * gapBetweenPlanets3d; 
@@ -665,8 +700,6 @@ public class JsonParse : MonoBehaviour {
             Material planetMaterial = new Material (Shader.Find ("Standard"));
 			thisPlanet.GetComponent<MeshRenderer>().material = planetMaterial;
             planetMaterial.mainTexture = Resources.Load(getPlanetTexture(planetsemiMajorAxis,planetTemp)) as Texture;
-
-
             thisPlanet.transform.localScale = new Vector3 (planetSize * changedPlanetSize, planetSize * changedPlanetSize, planetSize * changedPlanetSize);
             thisPlanet.transform.position = new Vector3 (0, 0, planetDistance * orbitXScale);
 			
@@ -675,7 +708,6 @@ public class JsonParse : MonoBehaviour {
         Rigidbody solarSystemRigidBody = SolarSystem.AddComponent<Rigidbody>(); 
         solarSystemRigidBody.isKinematic = true;
         solarSystemRigidBody.useGravity = false;
-        Debug.Log("HELLO");
         
      SolarSystem.transform.parent = parentSolarSystemGameObject.transform;
      return SolarSystem;
