@@ -204,7 +204,7 @@ public class JsonParse : MonoBehaviour {
 
 
 // changing size of the planets 
-    void scalePlanetsUp()
+  public  void scalePlanetsUp()
     {
         GameObject[] spheres;
                     spheres = GameObject.FindGameObjectsWithTag("Planet3d"); 
@@ -220,7 +220,7 @@ public class JsonParse : MonoBehaviour {
                     changedPlanetSize = changedPlanetSize * planetSizeScalingValue;
     }
     
-    void scalePlanetsDown()
+ public   void scalePlanetsDown()
     {
                  GameObject[] spheres;
                     spheres = GameObject.FindGameObjectsWithTag("Planet3d"); 
@@ -237,7 +237,7 @@ public class JsonParse : MonoBehaviour {
                     changedPlanetSize = changedPlanetSize / planetSizeScalingValue;
         }
 // setting the scale orbit period 
-    void scaleOrbitPeriodUp()
+ public   void scaleOrbitPeriodUp()
     {
                 GameObject[] pivots;
                     pivots = GameObject.FindGameObjectsWithTag("Pivot"); 
@@ -249,7 +249,7 @@ public class JsonParse : MonoBehaviour {
                     changedOrbitPeriod = changedOrbitPeriod * OrbitPeriodScalingValue; 
     }
 
-    void scaleOrbitPeriodDown()
+ public   void scaleOrbitPeriodDown()
     {
                 GameObject[] pivots;
                     pivots = GameObject.FindGameObjectsWithTag("Pivot"); 
@@ -263,7 +263,7 @@ public class JsonParse : MonoBehaviour {
 
 
 // scale rotational period 
-     void scaleRotationPeriodUp()
+  public   void scaleRotationPeriodUp()
     {
                 GameObject[] pivots;
                     pivots = GameObject.FindGameObjectsWithTag("Pivot"); 
@@ -275,7 +275,7 @@ public class JsonParse : MonoBehaviour {
                     changedRotationPeriod = changedRotationPeriod / RotationPeriodScalingValue; 
     }
 
-    void scaleRotationPeriodDown()
+ public   void scaleRotationPeriodDown()
     {
                 GameObject[] pivots;
                     pivots = GameObject.FindGameObjectsWithTag("Pivot"); 
@@ -290,7 +290,7 @@ public class JsonParse : MonoBehaviour {
 
 // scale the orbit distance between everything 
 
-    void scaleOrbitDistanceUp()
+  public  void scaleOrbitDistanceUp()
     {
                 GameObject[] pivots;
                     pivots = GameObject.FindGameObjectsWithTag("Pivot"); 
@@ -316,7 +316,7 @@ public class JsonParse : MonoBehaviour {
 
     }
 
- void scaleOrbitDistanceDown()
+ public void scaleOrbitDistanceDown()
     {
                 GameObject[] pivots;
                     pivots = GameObject.FindGameObjectsWithTag("Pivot"); 
