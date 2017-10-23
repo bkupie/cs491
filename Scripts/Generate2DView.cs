@@ -16,6 +16,7 @@ public class Generate2DView : MonoBehaviour
     float panelThickness = 0.1f;
     
     float panelYOffset = 2f;
+    float panelXOffset = 4f;
     float planetBoxOffset = 0.8f;
     float panelSunSize = 2f;
 
@@ -329,18 +330,42 @@ public class Generate2DView : MonoBehaviour
 
     public void handlePanelPosition(GameObject systemParent, int i)
     {
-        if (i < 3)
-            systemParent.transform.position = new Vector3(0, i * (panelHeight + panelYOffset), 0);
-        else if (i < 6)
+        int colNum = i % 5;
+        int rowNum = i / 5;
+        
+        switch(colNum)
         {
-            systemParent.transform.position = new Vector3(-(panelWidth - 4), (i - 3) * (panelHeight + panelYOffset), -(panelWidth / 2));
-            systemParent.transform.eulerAngles = new Vector3(0f, -60f, 0f);
+            case 0:
+                systemParent.transform.position = new Vector3(colNum * (panelWidth + panelXOffset), rowNum * (panelHeight + panelYOffset), 0);
+                break;
+            case 1:
+                systemParent.transform.position = new Vector3(colNum * (panelWidth + panelXOffset), rowNum * (panelHeight + panelYOffset), 0);
+                break;
+            case 2:
+                systemParent.transform.position = new Vector3(colNum * (panelWidth + panelXOffset), rowNum * (panelHeight + panelYOffset), -20);
+                systemParent.transform.eulerAngles = new Vector3(0, 45, 0);
+                break;
+            case 3:
+                systemParent.transform.position = new Vector3(colNum * (panelWidth + panelXOffset) - 26, rowNum * (panelHeight + panelYOffset), -65);
+                systemParent.transform.eulerAngles = new Vector3(0, 90, 0);
+                break;
+            case 4:
+                systemParent.transform.position = new Vector3((colNum - 1) * (panelWidth + panelXOffset) - 26, (rowNum) * (panelHeight + panelYOffset), -65 - panelWidth - panelXOffset);
+                systemParent.transform.eulerAngles = new Vector3(0, 90, 0);
+                break;
         }
-        else
-        {
-            systemParent.transform.position = new Vector3(panelWidth - 4, (i - 6) * (panelHeight + panelYOffset), -(panelWidth / 2));
-            systemParent.transform.eulerAngles = new Vector3(0f, 60f, 0f);
-        }
+        //if (i < 3)
+        //    systemParent.transform.position = new Vector3(0, i * (panelHeight + panelYOffset), 0);
+        //else if (i < 6)
+        //{
+        //    systemParent.transform.position = new Vector3(-(panelWidth - 4), (i - 3) * (panelHeight + panelYOffset), -(panelWidth / 2));
+        //    systemParent.transform.eulerAngles = new Vector3(0f, -60f, 0f);
+        //}
+        //else
+        //{
+        //    systemParent.transform.position = new Vector3(panelWidth - 4, (i - 6) * (panelHeight + panelYOffset), -(panelWidth / 2));
+        //    systemParent.transform.eulerAngles = new Vector3(0f, 60f, 0f);
+        //}
     }
 
     public void create2DPanel(SolarSystem system, GameObject systemParent)
