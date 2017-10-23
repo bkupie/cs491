@@ -230,7 +230,7 @@ public class Generate2DView : MonoBehaviour
         GameObject all2DViews = new GameObject();
         all2DViews.name = "All 2D Views";
 
-        all2DViews.transform.parent = this.gameObject.transform;
+        all2DViews.transform.parent = this.gameObject.transform.GetChild(1);
 
         for (int i = 0; i < maxSystemsShown; i++)
         {
@@ -238,7 +238,7 @@ public class Generate2DView : MonoBehaviour
 
             if (i == 0)
             {
-                systemParent.name = "2D View of " + ss[0].star;
+                systemParent.name = ss[0].star;
                 systemParent.transform.parent = all2DViews.transform;
 
                 create2DPanel(ss[0], systemParent);
@@ -249,7 +249,7 @@ public class Generate2DView : MonoBehaviour
             }
             else
             {
-                systemParent.name = "2D View of " + ss[i + curStartIdx].star;
+                systemParent.name = ss[i + curStartIdx].star;
                 systemParent.transform.parent = all2DViews.transform;
 
                 create2DPanel(ss[i + curStartIdx], systemParent);
@@ -261,7 +261,7 @@ public class Generate2DView : MonoBehaviour
             
         }
 
-        all2DViews.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        //all2DViews.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
     }
 
     public void updateUniverseView()
