@@ -85,7 +85,7 @@ public class JsonParse : MonoBehaviour {
 	void Start () {
         parentSolarSystemGameObject = new GameObject();
         parentSolarSystemGameObject.name = "Main Solar System object";
-        
+    
 
         // load the json file 
         // Path.Combine combines strings into a file path
@@ -181,11 +181,21 @@ public class JsonParse : MonoBehaviour {
 
         
 	}
+
+    public void resetView()
+    {
+        // reset the counter 
+
+    }
+
+
+
+
 // changing size of the planets 
     void scalePlanetsUp()
     {
         GameObject[] spheres;
-                    spheres = GameObject.FindGameObjectsWithTag("Planet"); 
+                    spheres = GameObject.FindGameObjectsWithTag("Planet3d"); 
                     // Iterate through them and turn each one off
                     foreach (GameObject sphere in spheres)
                     { 
@@ -201,7 +211,7 @@ public class JsonParse : MonoBehaviour {
     void scalePlanetsDown()
     {
                  GameObject[] spheres;
-                    spheres = GameObject.FindGameObjectsWithTag("Planet"); 
+                    spheres = GameObject.FindGameObjectsWithTag("Planet3d"); 
                     // Iterate through them and turn each one off
                     foreach (GameObject sphere in spheres)
                     { 
@@ -426,8 +436,22 @@ public class JsonParse : MonoBehaviour {
         return temp;
     }
 
-    private string getStarTexture(float temperature)
+    private string getStarTexture(float temperature, string spectral)
     {
+        if (spectral[0] == 'o' || spectral[0] == 'O')
+        return "ostar";
+        else if (spectral[0] == 'b' || spectral[0] == 'B')
+        return "bstar";
+        else if (spectral[0] == 'a' || spectral[0] == 'A')
+        return "astar";
+        else if (spectral[0] == 'f' || spectral[0] == 'F')
+        return "fstar";
+        else if (spectral[0] == 'k' || spectral[0] == 'K')
+        return "kstar";
+        else if (spectral[0] == 'm' || spectral[0] == 'M')
+        return "mstar";
+
+
         if (temperature > 25000)
             return "ostar";
         else if (temperature > 11000 || temperature <= 25000)
@@ -518,6 +542,18 @@ public class JsonParse : MonoBehaviour {
         HabitableOuter.AddComponent<PlanetMotion>();
         HabitableOuter.GetComponent<PlanetMotion>().ellipse.xAxis = HabitOut ;
         HabitableOuter.GetComponent<PlanetMotion>().ellipse.zAxis = HabitOut ;
+        // fake planets to make the thing happy
+        GameObject fakePlanet1 = GameObject.CreatePrimitive (PrimitiveType.Sphere);
+        GameObject fakePlanet2 = GameObject.CreatePrimitive (PrimitiveType.Sphere);
+
+        fakePlanet1.GetComponent<MeshRenderer>().enabled = false;
+        fakePlanet2.GetComponent<MeshRenderer>().enabled = false;
+
+        fakePlanet1.transform.parent = HabitableInner.transform;
+        fakePlanet2.transform.parent = HabitableOuter.transform;
+
+        HabitableInner.GetComponent<PlanetMotion>().planet = fakePlanet1.GetComponent<Transform>();
+        HabitableOuter.GetComponent<PlanetMotion>().planet = fakePlanet2.GetComponent<Transform>();
         // turn off rotation  and turn off orbit
         HabitableInner.GetComponent<PlanetMotion>().rotateActive = false;
         HabitableOuter.GetComponent<PlanetMotion>().rotateActive = false;
@@ -547,7 +583,7 @@ public class JsonParse : MonoBehaviour {
             //create the plaent and the pivot point for it 
             GameObject planetPivot = new GameObject();
             GameObject thisPlanet = GameObject.CreatePrimitive (PrimitiveType.Sphere);
-            thisPlanet.tag = "Planet";
+            thisPlanet.tag = "Planet3d";
             planetPivot.tag = "Pivot";
             planetPivot.name = planetName +"_Pivot_" + thisSolarSystem.systems_planets[i].ID;
             thisPlanet.transform.parent = planetPivot.transform;
@@ -579,11 +615,11 @@ public class JsonParse : MonoBehaviour {
     // create all the other systems 
     GameObject CreateView(SolarSystem thisSolarSystem)
 	{   
-        // if this our solar system 
-       // if(thisSolarSystem.ID == 0)
-       //     { return CreateOurSolarSystem(thisSolarSystem); }
-		// based off the values from the solar system, make a 3d VIEW
-		//first the sun 	
+        //if this our solar system 
+       if(thisSolarSystem.ID == 0)
+           { return CreateOurSolarSystem(thisSolarSystem); }
+	// 	based off the values from the solar system, make a 3d VIEW
+	// 	first the sun 	
 		GameObject theStar;
         GameObject SolarSystem = new GameObject();
         
@@ -608,7 +644,7 @@ public class JsonParse : MonoBehaviour {
         theStar.transform.localScale = new Vector3 (starSize * 0.7f, starSize * 0.7f, starSize * 0.7f);
         
         // get the texture name of the star 
-        string textureNameStar = getStarTexture(thisSolarSystem.temperature);
+        string textureNameStar = getStarTexture(thisSolarSystem.temperature , thisSolarSystem.spectral);
 
         Material starMaterial = new Material (Shader.Find ("Unlit/Texture"));
 		theStar.GetComponent<MeshRenderer> ().material = starMaterial;
@@ -617,7 +653,7 @@ public class JsonParse : MonoBehaviour {
         theStar.transform.parent = SolarSystem.transform;
         float HabitIn = thisSolarSystem.habitable_Inner;
         float HabitOut = thisSolarSystem.habitable_Outer;
-        Debug.Log("In " + HabitIn + " Out " + HabitOut);
+
         // makehabitable zone 
         GameObject HabitableInner = new GameObject();
         GameObject HabitableOuter = new GameObject();
@@ -678,7 +714,7 @@ public class JsonParse : MonoBehaviour {
             string textureName = planetName; // for now get picture texture based off name 
             GameObject planetPivot = new GameObject();
             GameObject thisPlanet = GameObject.CreatePrimitive (PrimitiveType.Sphere);
-            thisPlanet.tag = "Planet";
+            thisPlanet.tag = "Planet3d";
             planetPivot.name = planetName +"_Pivot_"+thisSolarSystem.systems_planets[i].ID;
             planetPivot.tag = "Pivot";
             thisPlanet.transform.parent = planetPivot.transform;
