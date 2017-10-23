@@ -263,7 +263,7 @@ public class Generate2DView : MonoBehaviour
 
         all2DViews.transform.localScale = new Vector3(0.015f, 0.015f, 0.015f);
         all2DViews.transform.localPosition = new Vector3(0, 0, 0);
-        all2DViews.transform.eulerAngles = new Vector3(0, 0, 0);
+        all2DViews.transform.eulerAngles = new Vector3(0, 90, 0);
     }
 
     public void updateUniverseView()
