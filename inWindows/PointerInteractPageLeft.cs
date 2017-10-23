@@ -14,6 +14,8 @@ public class PointerInteractPageLeft : VRTK_InteractableObject {
         //rend.material.shader = Shader.Find ("Specular");
         //rend.material.SetColor ("_SpecColor", Color.red);
 
+        parent = this.transform.parent.gameObject;
+
         Generate2DView generateScript = parent.GetComponent<Generate2DView>();
 
         generateScript.pagePlanets();
@@ -35,8 +37,6 @@ public class PointerInteractPageLeft : VRTK_InteractableObject {
     }
 
     protected void Start () {
-
-        parent = this.transform.parent.gameObject;
 
     }
 
