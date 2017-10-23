@@ -34,14 +34,14 @@ public class Generate2DView : MonoBehaviour
 
     //other
     public GameObject HaloPrefab;
-    int filterCounter = 0;
+    public int filterCounter = 0;
     public string searchQuery;
 
     void Start ()
     {
         jsonscript = this.GetComponent<JsonParse>();
         ss = jsonscript.SortSystemsMostPlanets();
-        print(ss.Length);
+        //print(ss.Length);
 
         create2DView();
         createUniverseView();
@@ -61,7 +61,12 @@ public class Generate2DView : MonoBehaviour
 
         else if (Input.GetKeyDown(KeyCode.M))
         {
-            pagePlanets();
+            pagePlanets(1);
+            updateUniverseView();
+        }
+        else if (Input.GetKeyDown(KeyCode.N))
+        {
+            pagePlanets(-1);
             updateUniverseView();
         }
         else if (Input.GetKeyDown(KeyCode.U))
@@ -99,7 +104,7 @@ public class Generate2DView : MonoBehaviour
                 }
                 create2DView();
             }
-            else if (command == "SN:")
+            else if (command == "SN:") //SN:Kepler;
             {
                 string starToFind = (searchQuery.Substring(3).TrimEnd(';'));
                 maxSystemsShown = 1;
@@ -133,7 +138,7 @@ public class Generate2DView : MonoBehaviour
                 {
                     if (float.Parse(ss[i].system) == typeToFind)
                     {
-                        print(ss[i]);
+                        //print(ss[i]);
                         maxSystemsShown++;
                         if (maxSystemsShown > 9)
                             maxSystemsShown = 9;
@@ -142,7 +147,7 @@ public class Generate2DView : MonoBehaviour
                     }
 
                 }
-                print(queryList.Count);
+                //print(queryList.Count);
                 curStartIdx = 0;
                 ss = queryList.ToArray();
                 create2DView();
@@ -220,8 +225,11 @@ public class Generate2DView : MonoBehaviour
 
     public void create2DView()
     {
+        
         GameObject all2DViews = new GameObject();
         all2DViews.name = "All 2D Views";
+
+        all2DViews.transform.parent = this.gameObject.transform;
 
         for (int i = 0; i < maxSystemsShown; i++)
         {
@@ -261,12 +269,25 @@ public class Generate2DView : MonoBehaviour
         createUniverseView();
     }
 
-    public void pagePlanets()
+    public void pagePlanets(int direction)
     {
+        Debug.Log("Switching Page " + direction);
         GameObject.Destroy(GameObject.Find("All 2D Views"));
-        curStartIdx += maxSystemsShown;
-        if (curStartIdx > ss.Length)
-            curStartIdx = 0;
+
+        if (direction == 1)
+        {
+            curStartIdx += maxSystemsShown;
+            if (curStartIdx > ss.Length)
+                curStartIdx = 0;
+        }
+        else
+        {
+            curStartIdx -= maxSystemsShown;
+            if (curStartIdx < 0)
+                curStartIdx = ss.Length - 1 - maxSystemsShown;
+        }
+
+        
         create2DView();
     }
 
@@ -672,6 +693,7 @@ public class Generate2DView : MonoBehaviour
 
     public void changePlanetSize(int direction)
     {
+        Debug.Log("Changing Distance Size: " + direction);
         if (direction == 1)
             sizeScale *= sizeChangeFactor;
         else
@@ -697,7 +719,7 @@ public class Generate2DView : MonoBehaviour
                             newPlanetSize = planetBoxSize;
 
                             GameObject p = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find("Planets").transform.Find(planet.name).gameObject;
-                            print(p.name);
+                            //print(p.name);
                             p.transform.localScale = new Vector3(newPlanetSize, newPlanetSize, panelDepth * 5);
 
                             GameObject sizeIcon = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find(planet.name + " Box").transform.Find("Size Icon").gameObject;
@@ -720,13 +742,14 @@ public class Generate2DView : MonoBehaviour
 
     public void changePlanetScale(int direction)
     {
+        Debug.Log("Changing Distance " + direction);
         if (direction == 1)
             distanceScale *= distanceChangeFactor;
         else
             distanceScale /= distanceChangeFactor;
 
         GameObject[] planets = GameObject.FindGameObjectsWithTag("Planet");
-        Debug.Log("here");
+        //Debug.Log("here");
         foreach (GameObject planet in planets)
         {
             for (int i = 0; i < ss.Length; i++)
@@ -740,7 +763,7 @@ public class Generate2DView : MonoBehaviour
 
                     if (planet.name == planetName)
                     {
-                        Debug.Log(ss[i].systems_planets[j].p_name);
+                        //Debug.Log(ss[i].systems_planets[j].p_name);
                         newSemiMajorAxis = ss[i].systems_planets[j].p_semiMajor * distanceScale + leftOffset;
 
                         if (newSemiMajorAxis > panelWidth / 2)
@@ -848,6 +871,8 @@ public class Generate2DView : MonoBehaviour
     {
         GameObject universeParent = new GameObject();
         universeParent.name = "Universe";
+
+        universeParent.transform.parent = this.gameObject.transform;
 
         for (int i = 0; i < ss.Length; i++)
         {
