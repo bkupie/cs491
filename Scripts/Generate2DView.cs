@@ -3,88 +3,6 @@ using UnityEngine;
 
 [System.Serializable]
 
-public class Planet2D
-{
-    public string planetName;
-    public string discoveryMethod;
-
-    public float eqTemperature;
-    public float semiMajorAxis;
-
-    public float radiusR_Earth;
-    public float massR_Earth;
-
-    public float rotationalPeriod;
-    public float orbitalPeriod;
-
-    public Planet2D(string name, string method, float radius, float mass, float rotperiod, float semiaxis, float orbperiod, float etemp)
-    {
-        planetName = name;
-        discoveryMethod = method;
-        semiMajorAxis = semiaxis;
-        radiusR_Earth = radius;
-        massR_Earth = mass;
-        rotationalPeriod = rotperiod;
-        orbitalPeriod = orbperiod;
-        eqTemperature = etemp;
-    }
-}
-
-public class Star2D
-{
-    public string starName;         // Name of Star2D
-
-    public string spectral;         // Spectral Classification of the Star2D
-    public float temperature;       // Temperature of Star2D - [K]
-
-    public float radiusR_Sun;       // Radius of Star2D Relative to Our Sun
-    public float massR_Sun;         // Mass of Star2D Relative to OUr Sun
-
-    public Star2D(string name, string spect, float temp, float radius, float mass)
-    {
-        starName = name;
-        spectral = spect;
-        temperature = temp;
-        radius = radiusR_Sun;
-        mass = massR_Sun;
-    }
-}
-
-public class SolarSystem2D
-{
-    public int systemID;            // Solar System ID
-    public string systemName;
-
-    public List<Planet2D> planets = new List<Planet2D>();
-    public List<Star2D> stars = new List<Star2D>();
-
-    public float distanceFromUs;    // Distance from our own Sun - [Light Years]
-
-    public float x, y, z;           // Unity Space X,Y,Z Coordinates
-
-    public float habitableInner;
-    public float habitableOuter;
-
-    public SolarSystem2D(int id, string name, float habinner, float habouter, int numplanets, int numstars)
-    {
-        systemID = id;
-        systemName = name;
-        habitableInner = habinner;
-        habitableOuter = habouter;
-    }
-
-    public void addPlanet(Planet2D p)
-    {
-        planets.Add(p);
-    }
-
-    public void addStar(Star2D s)
-    {
-        stars.Add(s);
-    }
-}
-
-
 public class Generate2DView : MonoBehaviour
 {
     //List<SolarSystem2D> solarSystems = new List<SolarSystem2D>();
@@ -114,14 +32,19 @@ public class Generate2DView : MonoBehaviour
     public SolarSystem[] ss;
     JsonParse jsonscript;
 
+    //other
+    public GameObject HaloPrefab;
+    int filterCounter = 0;
+    public string searchQuery;
+
     void Start ()
     {
-        //loadDummyData();
-
         jsonscript = this.GetComponent<JsonParse>();
         ss = jsonscript.SortSystemsMostPlanets();
         print(ss.Length);
+
         create2DView();
+        createUniverseView();
     }
 	
 	void Update ()
@@ -139,6 +62,132 @@ public class Generate2DView : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.M))
         {
             pagePlanets();
+            updateUniverseView();
+        }
+        else if (Input.GetKeyDown(KeyCode.U))
+        {
+            filterPlanets();
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            searchSystems();
+        }
+    }
+
+    public void searchSystems()
+    {
+        ss = jsonscript.SortSystemsMostHabitable();
+        Debug.Log(searchQuery);
+        if (searchQuery[searchQuery.Length - 1] == ';')
+        {
+            string command = searchQuery.Substring(0, 3);
+            Debug.Log("Command: " + command);
+            if (command == "ID:")
+            {
+                int idToFind = int.Parse(searchQuery.Substring(3).TrimEnd(';'));
+                maxSystemsShown = 1;
+                GameObject.Destroy(GameObject.Find("All 2D Views"));
+                for (int i = 0; i < ss.Length; i++)
+                {
+                    if (ss[i].ID == idToFind)
+                    {
+                        maxSystemsShown++;
+                        Debug.Log("Found " + idToFind + " | System: " + ss[i].star + " | ID: " + ss[i].ID);
+                        curStartIdx = i;
+                    }
+                        
+                }
+                create2DView();
+            }
+            else if (command == "SN:")
+            {
+                string starToFind = (searchQuery.Substring(3).TrimEnd(';'));
+                maxSystemsShown = 1;
+                Debug.Log("Searching for " + starToFind);
+                GameObject.Destroy(GameObject.Find("All 2D Views"));
+                List<SolarSystem> queryList = new List<SolarSystem>();
+                for (int i = 0; i < ss.Length; i++)
+                {
+                    if (ss[i].star.Contains(starToFind))
+                    {
+                        maxSystemsShown++;
+                        if (maxSystemsShown > 9)
+                            maxSystemsShown = 9;
+
+                        Debug.Log("Found " + ss[i].star);
+                        queryList.Add(ss[i]);
+                    }
+                }
+                curStartIdx = 0;
+                ss = queryList.ToArray();
+                create2DView();
+            }
+            else if (command == "SY:") // System Type
+            {
+                // TODO: CHECK THIS
+                string typeToFind = (searchQuery.Substring(3).TrimEnd(';'));
+                maxSystemsShown = 1;
+                GameObject.Destroy(GameObject.Find("All 2D Views"));
+                for (int i = 0; i < ss.Length; i++)
+                {
+                    if (ss[i].system == typeToFind)
+                    {
+                        maxSystemsShown++;
+                        Debug.Log("Found " + typeToFind + " | System: " + ss[i].star + " | ID: " + ss[i].ID);
+                        curStartIdx = i;
+                    }
+
+                }
+                create2DView();
+            }
+            else if (command == "SC:")
+            {
+                Debug.Log("Searching for Spectral Class");
+                string classToFind = (searchQuery.Substring(3).TrimEnd(';'));
+                maxSystemsShown = 1;
+                Debug.Log("Searching for " + classToFind);
+                GameObject.Destroy(GameObject.Find("All 2D Views"));
+                List<SolarSystem> queryList = new List<SolarSystem>();
+                for (int i = 0; i < ss.Length; i++)
+                {
+                    if (ss[i].spectral.Contains(classToFind))
+                    {
+                        maxSystemsShown++;
+                        if (maxSystemsShown > 9)
+                            maxSystemsShown = 9;
+
+                        Debug.Log("Found " + ss[i].star);
+                        queryList.Add(ss[i]);
+                    }
+                }
+                curStartIdx = 0;
+                ss = queryList.ToArray();
+                create2DView();
+            }
+            else if (command == "ST:")
+            {
+                Debug.Log("Searching for Star Temperature");
+            }
+            else if (command == "NP:")
+            {
+                Debug.Log("Searching for Number of Planets");
+            }
+            else if (command == "DM:")
+            {
+                Debug.Log("Searching for Discovery Method");
+            }
+            else if (command == "PT:")
+            {
+                Debug.Log("Searching for Planet Temperature");
+            }
+            else
+            {
+                Debug.Log("Unknown Command");
+            }
+        }
+        else
+        {
+            Debug.Log("Do Nothing");
         }
     }
 
@@ -151,17 +200,38 @@ public class Generate2DView : MonoBehaviour
         {
             GameObject systemParent = new GameObject();
 
-            systemParent.name = "2D View of " + ss[i + curStartIdx].star;
-            systemParent.transform.parent = all2DViews.transform;
+            if (i == 0)
+            {
+                systemParent.name = "2D View of " + ss[0].star;
+                systemParent.transform.parent = all2DViews.transform;
 
-            create2DPanel(ss[i + curStartIdx], systemParent);
-            create2DStar(ss[i + curStartIdx], systemParent);
-            create2DPlanets(ss[i + curStartIdx], systemParent);
+                create2DPanel(ss[0], systemParent);
+                create2DStar(ss[0], systemParent);
+                create2DPlanets(ss[0], systemParent);
 
-            handlePanelPosition(systemParent, i);
+                handlePanelPosition(systemParent, i);
+            }
+            else
+            {
+                systemParent.name = "2D View of " + ss[i + curStartIdx].star;
+                systemParent.transform.parent = all2DViews.transform;
+
+                create2DPanel(ss[i + curStartIdx], systemParent);
+                create2DStar(ss[i + curStartIdx], systemParent);
+                create2DPlanets(ss[i + curStartIdx], systemParent);
+
+                handlePanelPosition(systemParent, i);
+            }
+            
         }
 
         all2DViews.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+    }
+
+    public void updateUniverseView()
+    {
+        GameObject.Destroy(GameObject.Find("Universe"));
+        createUniverseView();
     }
 
     public void pagePlanets()
@@ -171,6 +241,42 @@ public class Generate2DView : MonoBehaviour
         if (curStartIdx > ss.Length)
             curStartIdx = 0;
         create2DView();
+    }
+
+    public void filterPlanets()
+    {
+        GameObject.Destroy(GameObject.Find("All 2D Views"));
+
+        switch (filterCounter)
+        {
+            case 0:
+                ss = jsonscript.SortSystemsDistance();
+                Debug.Log("Sorted by Distance");
+                break;
+            case 1:
+                Debug.Log("Sorted by Most Habitable");
+                ss = jsonscript.SortSystemsMostHabitable();
+                break;
+            case 2:
+                Debug.Log("Sorted by Most Planets");
+                ss = jsonscript.SortSystemsMostPlanets();
+                break;
+            case 3:
+                Debug.Log("Sorted by Temperature");
+                ss = jsonscript.SortSystemsTemparture();
+                break;
+            default:
+                Debug.Log("Shouldn't be here");
+                break;
+        }
+
+
+        filterCounter++;
+        if (filterCounter > 3)
+            filterCounter = 0;
+
+        create2DView();
+        updateUniverseView();
     }
 
     public void handlePanelPosition(GameObject systemParent, int i)
@@ -217,7 +323,7 @@ public class Generate2DView : MonoBehaviour
         borderBox.name = "Borders";
         borderBox.transform.parent = panelParent.transform;
 
-        // Solar System Text
+        // Solar System Text + Info
         systemText = new GameObject();
         systemText.name = system.star + " Text";
         systemText.transform.parent = panelParent.transform;
@@ -225,8 +331,19 @@ public class Generate2DView : MonoBehaviour
         systemText.transform.localPosition = new Vector3(-panelWidth / 2 + 1, panelHeight / 2 + 1.5f, 0);
 
         TextMesh starTextMesh = systemText.AddComponent<TextMesh>();
-        starTextMesh.text = system.star;
+        starTextMesh.text = system.star + " (" + system.distance + " AU)"; // TODO: confirm if AU or light years?
         starTextMesh.fontSize = 150;
+
+        // Discovery Method:
+        GameObject discoveryText = new GameObject();
+        discoveryText.name = system.star + " Discovery Text";
+        discoveryText.transform.parent = panelParent.transform;
+        discoveryText.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        discoveryText.transform.localPosition = new Vector3(3, panelHeight / 2 + 1.5f, 0);
+
+        TextMesh discoveryTextMesh = discoveryText.AddComponent<TextMesh>();
+        discoveryTextMesh.text = "Discovery: " + system.systems_planets[0].p_discovery;
+        discoveryTextMesh.fontSize = 150;
     }
 
     public void create2DStar(SolarSystem system, GameObject systemParent)
@@ -263,6 +380,20 @@ public class Generate2DView : MonoBehaviour
         if (system.star == "Sun")
             return "sol";
 
+        if (system.spectral[0] == 'o' || system.spectral[0] == 'O')
+            return "ostar";
+        else if (system.spectral[0] == 'b' || system.spectral[0] == 'B')
+            return "bstar";
+        else if (system.spectral[0] == 'a' || system.spectral[0] == 'A')
+            return "astar";
+        else if (system.spectral[0] == 'f' || system.spectral[0] == 'F')
+            return "fstar";
+        else if (system.spectral[0] == 'k' || system.spectral[0] == 'K')
+            return "kstar";
+        else if (system.spectral[0] == 'm' || system.spectral[0] == 'M')
+            return "mstar";
+
+
         if (temperature > 25000)
             return "ostar";
         else if (temperature > 11000 || temperature <= 25000)
@@ -296,7 +427,7 @@ public class Generate2DView : MonoBehaviour
             Material borderMaterial;
             borderMaterial = new Material(Shader.Find("Unlit/Texture"));
 
-            if (system.systems_planets[i].p_semiMajor >= system.habitable_inner && system.systems_planets[i].p_semiMajor <= system.habitable_outer)
+            if (system.systems_planets[i].p_semiMajor >= system.habitable_Inner && system.systems_planets[i].p_semiMajor <= system.habitable_Outer)
             {
                 string materialName = "habitable";
                 borderMaterial.mainTexture = Resources.Load(materialName) as Texture;
@@ -445,9 +576,16 @@ public class Generate2DView : MonoBehaviour
             sidePlanetMaterial.mainTexture = Resources.Load(planetTextureName) as Texture;
             boxPlanet.GetComponent<MeshRenderer>().material = sidePlanetMaterial;
 
+            // Check if earth-like
+            if (system.systems_planets[i].p_semiMajor >= system.habitable_Inner && system.systems_planets[i].p_semiMajor <= system.habitable_Outer && system.systems_planets[i].p_radius_Earth < 1.25f && system.systems_planets[i].p_radius_Earth > 0.75f && system.systems_planets[i].p_mass_Earth < 2)
+            {
+                sidePlanetMaterial.mainTexture = Resources.Load("earth") as Texture;
+                boxPlanet.GetComponent<MeshRenderer>().material = sidePlanetMaterial;
+            }
 
-            // Scaled Radius
-            float planetRadius = getPlanetRadius(system.systems_planets[i]) * sizeScale;
+
+                // Scaled Radius
+                float planetRadius = getPlanetRadius(system.systems_planets[i]) * sizeScale;
             if (planetRadius > planetBoxSize)
             {
                 planetRadius = planetBoxSize;
@@ -672,72 +810,86 @@ public class Generate2DView : MonoBehaviour
             else
                 return "pluto";
         }
-
-        return textureName;
     }
-    
-    public void loadDummyData()
+
+    // ------------------------------------------------------------------------------
+    // ----------------------------UNIVERSE VIEW-------------------------------------
+    // ------------------------------------------------------------------------------
+
+    public float universeScale = 10;
+    public void createUniverseView()
     {
-        // Our Solar System
-        SolarSystem2D OurSun = new SolarSystem2D(0, "Our Sun", 0.5f, 3, 9, 1);
-        OurSun.addStar(new Star2D("Sun", "N/A", 5778, 0, 0));
-        OurSun.addStar(new Star2D("TestSun", "N/A", 3000, 0, 0));
-        //OurSun.addStar(new Star2D("TestSun", "N/A", 3000, 0, 0));
-        OurSun.addPlanet(new Planet2D("Mercury", "N/A", 0.383f, 0.0553f, -1, 0.387f, 88, -1));
-        OurSun.addPlanet(new Planet2D("Venus", "N/A", 0.950f, 0.815f, -1, 0.723f, 225, -1));
-        OurSun.addPlanet(new Planet2D("Earth", "N/A", 1f, 1f, -1, 1f, 365, -1));
-        OurSun.addPlanet(new Planet2D("Mars", "N/A", 0.532f, 0.1074f, -1, 1.524f, 687, -1));
-        OurSun.addPlanet(new Planet2D("Jupiter", "N/A", 10.97f, 318f, -1, 5.20f, 4333, -1));
-        OurSun.addPlanet(new Planet2D("Saturn", "N/A", 9.14f, 95.1f, -1, 9.54f, 10756, -1));
-        OurSun.addPlanet(new Planet2D("Uranus", "N/A", 3.98f, 14.53f, -1, 19.19f, 30687, -1));
-        OurSun.addPlanet(new Planet2D("Neptune", "N/A", 3.87f, 17.15f, -1, 30.1f, 60190, -1));
+        GameObject universeParent = new GameObject();
+        universeParent.name = "Universe";
 
-        //solarSystems.Add(OurSun);
-
-        // Gliese 667
-        SolarSystem2D Gliese667C = new SolarSystem2D(1, "Gliese 667 C", 0, 0, 7, 1);
-        Gliese667C.addStar(new Star2D("Gliese 667", "N/A", 3350, 0, 0));
-        Gliese667C.addPlanet(new Planet2D("Gliese 667 b", "RV", -1, 5.6f, -1, 0.051f, 7.2f, -1));
-        Gliese667C.addPlanet(new Planet2D("Gliese 667 h", "RV", -1, 1.1f, -1, 0.089f, 16.95f, -1));
-        Gliese667C.addPlanet(new Planet2D("Gliese 667 c", "RV", -1, 3.8f, -1, 0.125f, 28.14f, -1));
-        Gliese667C.addPlanet(new Planet2D("Gliese 667 f", "RV", -1, 2.7f, -1, 0.156f, 39.03f, -1));
-        Gliese667C.addPlanet(new Planet2D("Gliese 667 e", "RV", -1, 2.7f, -1, 0.213f, 62.2f, -1));
-        Gliese667C.addPlanet(new Planet2D("Gliese 667 d", "RV", -1, 5.1f, -1, 0.28f, 91.6f, -1));
-        Gliese667C.addPlanet(new Planet2D("Gliese 667 g", "RV", -1, 5.0f, -1, 0.55f, 256f, -1));
-
-        //solarSystems.Add(Gliese667C);
-
-        // Tau Ceti
-        SolarSystem2D TauCeti = new SolarSystem2D(2, "Tau Ceti", 0, 0, 5, 1);
-        TauCeti.addStar(new Star2D("Tau Ceti", "N/A", -1, 0, 0));
-        TauCeti.addPlanet(new Planet2D("Tau Ceti b", "RV", -1, 2.0f, 11.9f, 0.1050f, 13.96f, -1));
-        TauCeti.addPlanet(new Planet2D("Tau Ceti c", "RV", -1, 3.1f, 11.9f, 0.1950f, 35.4f, -1));
-        TauCeti.addPlanet(new Planet2D("Tau Ceti d", "RV", -1, 3.6f, 11.9f, 0.374f, 94.1f, -1));
-        TauCeti.addPlanet(new Planet2D("Tau Ceti e", "RV", -1, 4.3f, 11.9f, 0.552f, 168.1f, -1));
-        TauCeti.addPlanet(new Planet2D("Tau Ceti f", "RV", -1, 6.6f, 11.9f, 1.350f, 642f, -1));
-
-        //solarSystems.Add(TauCeti);
-
-        // Gliese 581
-        SolarSystem2D Gliese581 = new SolarSystem2D(3, "Gliese 581", 0, 0, 6, 1);
-        Gliese581.addStar(new Star2D("Gliese 581", "N/A", 3498, 0, 0));
-        Gliese581.addPlanet(new Planet2D("Gliese 581 b", "RV", -1, 15.8f, 20.3f, 0.0406f, 5.3686f, 419f));
-        Gliese581.addPlanet(new Planet2D("Gliese 581 c", "RV", -1, 5.5f, 20.3f, 0.0721f, 12.914f, 313f));
-        Gliese581.addPlanet(new Planet2D("Gliese 581 d", "RV", -1, 6.04f, 20.3f, 0.220f, 66.6f, 181.0f));
-        Gliese581.addPlanet(new Planet2D("Gliese 581 e", "RV", -1, 1.939f, 20.3f, 0.0282f, 3.1490f, 501f));
-        Gliese581.addPlanet(new Planet2D("Gliese 581 f", "RV", -1, 7.0f, 20.3f, 0.758f, 433f, -1));
-        Gliese581.addPlanet(new Planet2D("Gliese 581 g", "RV", -1, 3.10f, 20.3f, 0.1460f, 36.5f, 231f));
-
-        //solarSystems.Add(Gliese581);
-
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < ss.Length; i++)
         {
-            SolarSystem2D Filler = new SolarSystem2D(i + 4, "Filler" + i, 0, 0, 0, 1);
-            Filler.addStar(new Star2D("Filler" + i, "N/A", 3498, 0, 0));
+            GameObject systemSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            systemSphere.name = ss[i].star + " Universe";
+            systemSphere.transform.parent = universeParent.transform;
+            systemSphere.transform.localScale = new Vector3(2, 2, 2);
+            systemSphere.transform.localPosition = new Vector3(ss[i].x / universeScale, ss[i].y / universeScale, ss[i].z / universeScale); // TODO: Dont skew scale
 
-            //solarSystems.Add(Filler);
+            //Material systemSphereMat = new Material(Shader.Find("Transparent/Diffuse"));
+            Material systemSphereMat = new Material(Shader.Find("Standard"));
+            systemSphere.GetComponent<MeshRenderer>().material = systemSphereMat;
+
+            if (ss[i].star == "Sun")
+            {
+                systemSphere.transform.localScale = new Vector3(10, 10, 10);
+                systemSphere.GetComponent<MeshRenderer>().material.color = new Color(1, 0, 0);
+
+                Material earthMat = new Material(Shader.Find("Standard"));
+                earthMat.mainTexture = Resources.Load("earth") as Texture;
+                systemSphere.GetComponent<MeshRenderer>().material = earthMat;
+            }
+            else
+            {
+                systemSphere.GetComponent<MeshRenderer>().material.color = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+
+                
+
+
+            }
         }
+
+        for (int i = 0; i < maxSystemsShown; i++)
+        {
+            string systemName = ss[i + curStartIdx].star + " Universe";
+
+            if (ss[i].star != "Sun")
+            {
+                universeParent.transform.Find(systemName).localScale *= 2;
+                //universeParent.transform.Find(systemName).GetComponent<MeshRenderer>().material.color = new Color(1, 0, 1);
+                Material starMat = new Material(Shader.Find("Standard"));
+                starMat.mainTexture = Resources.Load(getStarColor(ss[i])) as Texture;
+                universeParent.transform.Find(systemName).GetComponent<MeshRenderer>().material = starMat;
+
+                GameObject halo = Instantiate(HaloPrefab) as GameObject;
+                halo.transform.SetParent(universeParent.transform.Find(systemName).transform, false);
+
+                GameObject universeViewText;
+
+                universeViewText = new GameObject();
+                universeViewText.name = ss[i + curStartIdx].star + " Text";
+                universeViewText.transform.parent = universeParent.transform;
+                universeViewText.transform.localScale = new Vector3(1f, 1f, 1f);
+                universeViewText.transform.eulerAngles = new Vector3(0, 180, 0);
+
+                Vector3 systemVec = universeParent.transform.Find(systemName).transform.position;
+                universeViewText.transform.localPosition = systemVec;
+
+                TextMesh universeViewTextMesh = universeViewText.AddComponent<TextMesh>();
+                universeViewTextMesh.text = ss[i + curStartIdx].star;
+                universeViewTextMesh.fontSize = 80;
+
+            }
+
+        }
+
+        universeParent.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+        universeParent.transform.localPosition = new Vector3(0, 10, -26);
+        //universeParent.transform.eulerAngles = new Vector3(45, -50, -20);
     }
-
-
 }
+
