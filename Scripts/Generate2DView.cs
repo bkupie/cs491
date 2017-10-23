@@ -76,24 +76,21 @@ public class Generate2DView : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
-            //searchSystems();
+            searchSystems();
         }
     }
 
-    public void searchSystems(string cat, string searchPhrase)
+    public void searchSystems()
     {
-        searchQuery = searchPhrase;
-
         ss = jsonscript.SortSystemsMostHabitable();
         Debug.Log(searchQuery);
         if (searchQuery[searchQuery.Length - 1] == ';')
         {
-            //string command = searchQuery.Substring(0, 3);
-            string command = cat;
+            string command = searchQuery.Substring(0, 3);
             Debug.Log("Command: " + command);
-            if (command == "ID")
+            if (command == "ID:")
             {
-                int idToFind = int.Parse(searchQuery.TrimEnd(';'));
+                int idToFind = int.Parse(searchQuery.Substring(3).TrimEnd(';'));
                 maxSystemsShown = 1;
                 GameObject.Destroy(GameObject.Find("All 2D Views"));
                 for (int i = 0; i < ss.Length; i++)
@@ -264,7 +261,7 @@ public class Generate2DView : MonoBehaviour
             
         }
 
-        //all2DViews.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        all2DViews.transform.localScale = new Vector3(0.015f, 0.015f, 0.015f);
     }
 
     public void updateUniverseView()
