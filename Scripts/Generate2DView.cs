@@ -103,7 +103,6 @@ public class Generate2DView : MonoBehaviour
             {
                 string starToFind = (searchQuery.Substring(3).TrimEnd(';'));
                 maxSystemsShown = 1;
-                Debug.Log("Searching for " + starToFind);
                 GameObject.Destroy(GameObject.Find("All 2D Views"));
                 List<SolarSystem> queryList = new List<SolarSystem>();
                 for (int i = 0; i < ss.Length; i++)
@@ -122,22 +121,30 @@ public class Generate2DView : MonoBehaviour
                 ss = queryList.ToArray();
                 create2DView();
             }
-            else if (command == "SY:") // System Type
+            else if (command == "SY:") // System Type TODO: Doesn't work too well, maybe remove?
             {
                 // TODO: CHECK THIS
-                string typeToFind = (searchQuery.Substring(3).TrimEnd(';'));
+                float typeToFind = float.Parse(searchQuery.Substring(3).TrimEnd(';'));
+
                 maxSystemsShown = 1;
                 GameObject.Destroy(GameObject.Find("All 2D Views"));
+                List<SolarSystem> queryList = new List<SolarSystem>();
                 for (int i = 0; i < ss.Length; i++)
                 {
-                    if (ss[i].system == typeToFind)
+                    if (float.Parse(ss[i].system) == typeToFind)
                     {
+                        print(ss[i]);
                         maxSystemsShown++;
-                        Debug.Log("Found " + typeToFind + " | System: " + ss[i].star + " | ID: " + ss[i].ID);
-                        curStartIdx = i;
+                        if (maxSystemsShown > 9)
+                            maxSystemsShown = 9;
+
+                        queryList.Add(ss[i]);
                     }
 
                 }
+                print(queryList.Count);
+                curStartIdx = 0;
+                ss = queryList.ToArray();
                 create2DView();
             }
             else if (command == "SC:")
@@ -167,6 +174,26 @@ public class Generate2DView : MonoBehaviour
             else if (command == "ST:")
             {
                 Debug.Log("Searching for Star Temperature");
+                float tempToFind = float.Parse(searchQuery.Substring(3).TrimEnd(';')));
+                maxSystemsShown = 1;
+                GameObject.Destroy(GameObject.Find("All 2D Views"));
+                List<SolarSystem> queryList = new List<SolarSystem>();
+
+                for (int i = 0; i < ss.Length; i++)
+                {
+                    if (ss[i].temperature < tempToFind + 100 && ss[i].temperature > tempToFind - 100)
+                    {
+                        maxSystemsShown++;
+                        if (maxSystemsShown > 9)
+                            maxSystemsShown = 9;
+
+                        Debug.Log("Found " + ss[i].star);
+                        queryList.Add(ss[i]);
+                    }
+                }
+                curStartIdx = 0;
+                ss = queryList.ToArray();
+                create2DView();
             }
             else if (command == "NP:")
             {
