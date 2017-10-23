@@ -87,9 +87,9 @@ public class SolarSystem2D
 
 public class Generate2DView : MonoBehaviour
 {
-    List<SolarSystem2D> solarSystems = new List<SolarSystem2D>();
+    //List<SolarSystem2D> solarSystems = new List<SolarSystem2D>();
 
-    public int maxSystemsShown = 9;
+    public int maxSystemsShown = 1;
 
     // Panel Variables
     float panelWidth = 40f;
@@ -111,27 +111,32 @@ public class Generate2DView : MonoBehaviour
 
     // paging
     int curStartIdx = 0;
+    public SolarSystem[] ss;
+    JsonParse jsonscript;
 
     void Start ()
     {
-        loadDummyData();
+        //loadDummyData();
 
+        jsonscript = this.GetComponent<JsonParse>();
+        ss = jsonscript.SortSystemsMostPlanets();
+        print(ss.Length);
         create2DView();
-	}
+    }
 	
 	void Update ()
     {
         if (Input.GetKeyDown(KeyCode.P))
-        {
             changePlanetScale(1);
-        }
         else if (Input.GetKeyDown(KeyCode.O))
             changePlanetScale(-1);
         else if (Input.GetKeyDown(KeyCode.L))
             changePlanetSize(1);
         else if (Input.GetKeyDown(KeyCode.K))
             changePlanetSize(-1);
-        else if (Input.GetKeyDown(KeyCode.X))
+
+
+        else if (Input.GetKeyDown(KeyCode.M))
         {
             pagePlanets();
         }
@@ -146,12 +151,12 @@ public class Generate2DView : MonoBehaviour
         {
             GameObject systemParent = new GameObject();
 
-            systemParent.name = "2D View of " + solarSystems[i + curStartIdx].systemName;
+            systemParent.name = "2D View of " + ss[i + curStartIdx].star;
             systemParent.transform.parent = all2DViews.transform;
 
-            create2DPanel(solarSystems[i + curStartIdx], systemParent);
-            create2DStar(solarSystems[i + curStartIdx], systemParent);
-            create2DPlanets(solarSystems[i + curStartIdx], systemParent);
+            create2DPanel(ss[i + curStartIdx], systemParent);
+            create2DStar(ss[i + curStartIdx], systemParent);
+            create2DPlanets(ss[i + curStartIdx], systemParent);
 
             handlePanelPosition(systemParent, i);
         }
@@ -163,7 +168,7 @@ public class Generate2DView : MonoBehaviour
     {
         GameObject.Destroy(GameObject.Find("All 2D Views"));
         curStartIdx += maxSystemsShown;
-        if (curStartIdx > solarSystems.Count)
+        if (curStartIdx > ss.Length)
             curStartIdx = 0;
         create2DView();
     }
@@ -184,7 +189,7 @@ public class Generate2DView : MonoBehaviour
         }
     }
 
-    public void create2DPanel(SolarSystem2D system, GameObject systemParent)
+    public void create2DPanel(SolarSystem system, GameObject systemParent)
     {
         GameObject panelParent, orbitLine, borderBox, systemText;
 
@@ -214,17 +219,17 @@ public class Generate2DView : MonoBehaviour
 
         // Solar System Text
         systemText = new GameObject();
-        systemText.name = system.systemName + " Text";
+        systemText.name = system.star + " Text";
         systemText.transform.parent = panelParent.transform;
         systemText.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         systemText.transform.localPosition = new Vector3(-panelWidth / 2 + 1, panelHeight / 2 + 1.5f, 0);
 
         TextMesh starTextMesh = systemText.AddComponent<TextMesh>();
-        starTextMesh.text = system.systemName;
+        starTextMesh.text = system.star;
         starTextMesh.fontSize = 150;
     }
 
-    public void create2DStar(SolarSystem2D system, GameObject systemParent)
+    public void create2DStar(SolarSystem system, GameObject systemParent)
     {
         GameObject starsParent;
         Material sideStarMaterial;
@@ -233,12 +238,12 @@ public class Generate2DView : MonoBehaviour
         starsParent.name = "Stars";
         starsParent.transform.parent = systemParent.transform;
 
-        int numStars = system.stars.Count;
+        int numStars = 1; // our data only has 1 star systems
         for (int i = 1; i <= numStars; i++)
         {
             // Star2D:
             GameObject sideStar = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            sideStar.name = system.stars[i-1].starName;
+            sideStar.name = system.star;
 
             sideStar.transform.parent = starsParent.transform;
 
@@ -252,10 +257,10 @@ public class Generate2DView : MonoBehaviour
         }
     }
 
-    string getStarColor(SolarSystem2D system)
+    string getStarColor(SolarSystem system)
     {
-        float temperature = system.stars[0].temperature;
-        if (system.systemName == "Our Sun")
+        float temperature = system.temperature;
+        if (system.star == "Sun")
             return "sol";
 
         if (temperature > 25000)
@@ -274,7 +279,7 @@ public class Generate2DView : MonoBehaviour
             return "mstar";
     }
 
-    public void create2DPlanets(SolarSystem2D system, GameObject systemParent)
+    public void create2DPlanets(SolarSystem system, GameObject systemParent)
     {
         GameObject lineConvergingPoint = new GameObject();
         lineConvergingPoint.transform.parent = systemParent.transform;
@@ -284,14 +289,14 @@ public class Generate2DView : MonoBehaviour
         planetsParent.name = "Planets";
         planetsParent.transform.parent = systemParent.transform;
 
-        for (int i = 0; i < system.planets.Count; i++)
+        for (int i = 0; i < system.numPlanets; i++)
         {
             // Planet2D Boxes
             GameObject planetBox;
             Material borderMaterial;
             borderMaterial = new Material(Shader.Find("Unlit/Texture"));
 
-            if (system.planets[i].semiMajorAxis >= system.habitableInner && system.planets[i].semiMajorAxis <= system.habitableOuter)
+            if (system.systems_planets[i].p_semiMajor >= system.habitable_inner && system.systems_planets[i].p_semiMajor <= system.habitable_outer)
             {
                 string materialName = "habitable";
                 borderMaterial.mainTexture = Resources.Load(materialName) as Texture;
@@ -303,7 +308,7 @@ public class Generate2DView : MonoBehaviour
             }
             
             planetBox = createBox(planetBoxSize, planetBoxSize, planetBoxSize, panelThickness, borderMaterial);
-            planetBox.name = system.planets[i].planetName + " Box";
+            planetBox.name = system.star + " " + system.systems_planets[i].p_name + " Box";
 
             planetBox.transform.parent = systemParent.transform;
 
@@ -314,19 +319,27 @@ public class Generate2DView : MonoBehaviour
             GameObject planetText;
 
             planetText = new GameObject();
-            planetText.name = system.planets[i].planetName + " Text";
+            planetText.name = system.star + " " + system.systems_planets[i].p_name + " Text";
             planetText.transform.parent = systemParent.transform;
             planetText.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
             planetText.transform.localPosition = new Vector3(-(panelWidth / 2) + panelSunSize * 2 + boxOffset - planetBoxSize / 2, -planetBoxSize / 2, 0);
 
             TextMesh planetTextMesh = planetText.AddComponent<TextMesh>();
-            planetTextMesh.text = system.planets[i].planetName;
-            planetTextMesh.fontSize = 80;
+            if (system.star == "Sun")
+            {
+                planetTextMesh.text = "" + (i + 1) + "." + system.systems_planets[i].p_name;
+            }
+            else
+            {
+                planetTextMesh.text = "" + (i + 1) + "." + system.star + " " + system.systems_planets[i].p_name;
+            }
+            
+            planetTextMesh.fontSize = 60;
 
             // Grey Planes
             GameObject greyPlane = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            greyPlane.name = system.planets[i].planetName + " Grey";
+            greyPlane.name = system.star + " " + system.systems_planets[i].p_name + " Grey";
 
             greyPlane.transform.parent = systemParent.transform;
 
@@ -343,7 +356,7 @@ public class Generate2DView : MonoBehaviour
             GameObject orbitPlanet;
 
             orbitPlanet = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            orbitPlanet.name = system.planets[i].planetName;
+            orbitPlanet.name = system.star + " " + system.systems_planets[i].p_name;
             orbitPlanet.tag = "Planet";
 
             Material orbitPlanetMat = new Material(Shader.Find("Unlit/Texture"));
@@ -352,15 +365,31 @@ public class Generate2DView : MonoBehaviour
             orbitPlanet.transform.parent = systemParent.transform;
 
             float leftOffset = -(panelWidth / 2) + panelSunSize / 2;
-            float semiMajor = system.planets[i].semiMajorAxis * distanceScale;
+            float semiMajor = system.systems_planets[i].p_semiMajor * distanceScale;
             orbitPlanet.transform.localPosition = new Vector3(semiMajor + leftOffset, (panelHeight / 3), 0); 
             orbitPlanet.transform.localScale = new Vector3(1, 1, 1);
+
+            // Text on Orbit Planets
+            GameObject orbitPlanetText;
+
+            orbitPlanetText = new GameObject();
+            orbitPlanetText.name = system.star + " " + system.systems_planets[i].p_name + " Orbit Text";
+            orbitPlanetText.transform.parent = systemParent.transform;
+            orbitPlanetText.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+
+            orbitPlanetText.transform.localPosition = new Vector3(semiMajor + leftOffset - 0.25f, (panelHeight / 3) + 1, 0);
+
+            TextMesh orbitPlanetTextMesh = orbitPlanetText.AddComponent<TextMesh>();
+            orbitPlanetTextMesh.text = "" + (i + 1);
+            orbitPlanetTextMesh.fontSize = 80;
+
 
 
             if (semiMajor + leftOffset > (panelWidth / 2))
             {
                 orbitPlanet.GetComponent<MeshRenderer>().enabled = false;
-                greyPlane.GetComponent<MeshRenderer>().enabled = true; ;
+                greyPlane.GetComponent<MeshRenderer>().enabled = true;
+                orbitPlanetText.GetComponent<MeshRenderer>().enabled = false;
             }
             else
             {
@@ -405,34 +434,24 @@ public class Generate2DView : MonoBehaviour
             Material sidePlanetMaterial;
 
             boxPlanet = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            boxPlanet.name = system.planets[i].planetName;
+            boxPlanet.name = system.star + " " + system.systems_planets[i].p_name;
 
             boxPlanet.transform.parent = planetsParent.transform;
 
             boxPlanet.transform.localPosition = new Vector3(-(panelWidth / 2) + panelSunSize * 2 + boxOffset, 0, 0);
 
-            string planetTextureName = getPlanetTexture(system, system.planets[i]);
+            string planetTextureName = getPlanetTexture(system, system.systems_planets[i]);
             sidePlanetMaterial = new Material(Shader.Find("Standard"));
             sidePlanetMaterial.mainTexture = Resources.Load(planetTextureName) as Texture;
             boxPlanet.GetComponent<MeshRenderer>().material = sidePlanetMaterial;
 
 
             // Scaled Radius
-            float planetRadius = getPlanetRadius(system.planets[i]) * sizeScale;
+            float planetRadius = getPlanetRadius(system.systems_planets[i]) * sizeScale;
             if (planetRadius > planetBoxSize)
             {
                 planetRadius = planetBoxSize;
                 tooLargeIcon.GetComponent<MeshRenderer>().enabled = true;
-
-                //Material redBorderMat;
-
-                //redBorderMat = new Material(Shader.Find("Unlit/Texture"));
-                //redBorderMat.mainTexture = Resources.Load("red") as Texture;
-
-                //planetBox.transform.Find("Top Border").GetComponent<MeshRenderer>().material = redBorderMat;
-                //planetBox.transform.Find("Left Border").GetComponent<MeshRenderer>().material = redBorderMat;
-                //planetBox.transform.Find("Right Border").GetComponent<MeshRenderer>().material = redBorderMat;
-                //planetBox.transform.Find("Bottom Border").GetComponent<MeshRenderer>().material = redBorderMat;
             }
                 
 
@@ -497,56 +516,35 @@ public class Generate2DView : MonoBehaviour
 
         foreach (GameObject planet in planets)
         {
-            for (int i = 0; i < solarSystems.Count; i++)
+            //Debug.Log(planet.name);
+            for (int i = 0; i < ss.Length; i++)
             {
                 float newPlanetSize = 0;
-                for (int j = 0; j < solarSystems[i].planets.Count; j++)
+                for (int j = 0; j < ss[i].numPlanets; j++)
                 {
-                    newPlanetSize = getPlanetRadius(solarSystems[i].planets[j]) * sizeScale;
-                    if (planet.name == solarSystems[i].planets[j].planetName)
+                    newPlanetSize = getPlanetRadius(ss[i].systems_planets[j]) * sizeScale;
+                    string planetName = ss[i].star + " " + ss[i].systems_planets[j].p_name;
+
+                    if (planet.name == planetName) //ss[i].systems_planets[j].p_name
                     {
                         if (newPlanetSize > planetBoxSize / 2)
                         {
                             newPlanetSize = planetBoxSize;
 
-                            GameObject p = GameObject.Find("All 2D Views").transform.Find("2D View of " + solarSystems[i].systemName).transform.Find("Planets").transform.Find(planet.name).gameObject;
+                            GameObject p = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find("Planets").transform.Find(planet.name).gameObject;
+                            print(p.name);
                             p.transform.localScale = new Vector3(newPlanetSize, newPlanetSize, panelDepth * 5);
 
-                            GameObject sizeIcon = GameObject.Find("All 2D Views").transform.Find("2D View of " + solarSystems[i].systemName).transform.Find(planet.name + " Box").transform.Find("Size Icon").gameObject;
+                            GameObject sizeIcon = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find(planet.name + " Box").transform.Find("Size Icon").gameObject;
                             sizeIcon.GetComponent<MeshRenderer>().enabled = true;
-
-                            //Material redBorderMat;
-
-                            //redBorderMat = new Material(Shader.Find("Unlit/Texture"));
-                            //redBorderMat.mainTexture = Resources.Load("red") as Texture;
-
-                            //GameObject box = GameObject.Find("All 2D Views").transform.Find("2D View of " + solarSystems[i].systemName).transform.Find(planet.name + " Box").gameObject;
-
-                            //box.transform.Find("Top Border").GetComponent<MeshRenderer>().material = redBorderMat;
-                            //box.transform.Find("Left Border").GetComponent<MeshRenderer>().material = redBorderMat;
-                            //box.transform.Find("Right Border").GetComponent<MeshRenderer>().material = redBorderMat;
-                            //box.transform.Find("Bottom Border").GetComponent<MeshRenderer>().material = redBorderMat;
                         }
                         else
                         {
-                            GameObject p = GameObject.Find("All 2D Views").transform.Find("2D View of " + solarSystems[i].systemName).transform.Find("Planets").transform.Find(planet.name).gameObject;
+                            GameObject p = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find("Planets").transform.Find(planet.name).gameObject;
                             p.transform.localScale = new Vector3(newPlanetSize, newPlanetSize, panelDepth * 5);
 
-                            GameObject sizeIcon = GameObject.Find("All 2D Views").transform.Find("2D View of " + solarSystems[i].systemName).transform.Find(planet.name + " Box").transform.Find("Size Icon").gameObject;
+                            GameObject sizeIcon = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find(planet.name + " Box").transform.Find("Size Icon").gameObject;
                             sizeIcon.GetComponent<MeshRenderer>().enabled = false;
-
-                            //Material greenBorderMat;
-
-                            //greenBorderMat = new Material(Shader.Find("Unlit/Texture"));
-                            //greenBorderMat.mainTexture = Resources.Load("habitable") as Texture;
-
-                            //GameObject box = GameObject.Find("All 2D Views").transform.Find("2D View of " + solarSystems[i].systemName).transform.Find(planet.name + " Box").gameObject;
-
-                            //box.transform.Find("Top Border").GetComponent<MeshRenderer>().material = greenBorderMat;
-                            //box.transform.Find("Left Border").GetComponent<MeshRenderer>().material = greenBorderMat;
-                            //box.transform.Find("Right Border").GetComponent<MeshRenderer>().material = greenBorderMat;
-                            //box.transform.Find("Bottom Border").GetComponent<MeshRenderer>().material = greenBorderMat;
-
                         }
                     }
 
@@ -563,45 +561,57 @@ public class Generate2DView : MonoBehaviour
             distanceScale /= distanceChangeFactor;
 
         GameObject[] planets = GameObject.FindGameObjectsWithTag("Planet");
-
+        Debug.Log("here");
         foreach (GameObject planet in planets)
         {
-            for (int i = 0; i < solarSystems.Count; i++)
+            for (int i = 0; i < ss.Length; i++)
             {
                 float leftOffset = -(panelWidth / 2) + panelSunSize / 2;
                 float newSemiMajorAxis = 0;
-                for (int j = 0; j < solarSystems[i].planets.Count; j++)
+
+                for (int j = 0; j < ss[i].numPlanets; j++)
                 {
-                    newSemiMajorAxis = solarSystems[i].planets[j].semiMajorAxis * distanceScale + leftOffset;
-                    if (planet.name == solarSystems[i].planets[j].planetName)
+                    string planetName = ss[i].star + " " + ss[i].systems_planets[j].p_name;
+
+                    if (planet.name == planetName)
                     {
+                        Debug.Log(ss[i].systems_planets[j].p_name);
+                        newSemiMajorAxis = ss[i].systems_planets[j].p_semiMajor * distanceScale + leftOffset;
+
                         if (newSemiMajorAxis > panelWidth / 2)
                         {
                             planet.GetComponent<MeshRenderer>().enabled = false;
-                            GameObject.Find("All 2D Views").transform.Find("2D View of " + solarSystems[i].systemName).transform.Find(planet.name + " Grey").GetComponent<MeshRenderer>().enabled = true;
+                            GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find(planet.name + " Grey").GetComponent<MeshRenderer>().enabled = true;
+
+                            GameObject orbitText = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find(planet.name + " Orbit Text").gameObject;
+                            orbitText.GetComponent<MeshRenderer>().enabled = false;
                         }
                         else
                         {
                             planet.GetComponent<MeshRenderer>().enabled = true;
                             planet.transform.localPosition = new Vector3(newSemiMajorAxis, (panelHeight / 3), 0);
-                            GameObject.Find("All 2D Views").transform.Find("2D View of " + solarSystems[i].systemName).transform.Find(planet.name + " Grey").GetComponent<MeshRenderer>().enabled = false;
+                            GameObject orbitText = GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find(planet.name + " Orbit Text").gameObject;
+                            orbitText.transform.localPosition = new Vector3(newSemiMajorAxis - 0.25f, (panelHeight / 3) + 1, 0);
+                            orbitText.GetComponent<MeshRenderer>().enabled = true;
+                            GameObject.Find("All 2D Views").transform.Find("2D View of " + ss[i].star).transform.Find(planet.name + " Grey").GetComponent<MeshRenderer>().enabled = false;
+
                         }
                     }
-                    
+
                 }
             }
         }
 
     }
 
-    public float getPlanetRadius(Planet2D p)
+    public float getPlanetRadius(Planet p)
     {
         float radius = 0;
 
-        if (p.radiusR_Earth == -1)
+        if (p.p_radius_Earth == -1)
         {
             
-            float mass = p.massR_Earth;
+            float mass = p.p_mass_Earth;
 
             if (mass < 2)
                 radius = 1f;
@@ -616,48 +626,48 @@ public class Generate2DView : MonoBehaviour
         }
         else
         {
-            radius = p.radiusR_Earth;
+            radius = p.p_radius_Earth;
         }
 
 
         return radius;
     }
 
-    public string getPlanetTexture(SolarSystem2D ss, Planet2D p)
+    public string getPlanetTexture(SolarSystem ss, Planet p)
     {
         string textureName;
 
-        if (ss.systemName == "Our Sun")
-            return p.planetName.ToLower();
+        if (ss.star == "Sun")
+            return p.p_name.ToLower();
 
-        if (p.eqTemperature != -1)
+        if (p.p_temperature != -1)
         {
-            if (p.eqTemperature < 150)
+            if (p.p_temperature < 150)
                 return "jupiter";
-            else if (p.eqTemperature >= 150 && p.eqTemperature < 250)
+            else if (p.p_temperature >= 150 && p.p_temperature < 250)
                 return "mercury";
-            else if (p.eqTemperature >= 250 && p.eqTemperature < 800)
+            else if (p.p_temperature >= 250 && p.p_temperature < 800)
                 return "neptune";
-            else if (p.eqTemperature >= 900 && p.eqTemperature < 1400)
+            else if (p.p_temperature >= 900 && p.p_temperature < 1400)
                 return "fstar";
             else
                 return "uranus";
         }
         else
         {
-            if (p.semiMajorAxis < 0.5)
+            if (p.p_semiMajor < 0.5)
                 return "mercury";
-            else if (p.semiMajorAxis >= 0.5 && p.semiMajorAxis < 1.5)
+            else if (p.p_semiMajor >= 0.5 && p.p_semiMajor < 1.5)
                 return "venus";
-            else if (p.semiMajorAxis >= 1.5 && p.semiMajorAxis < 5)
+            else if (p.p_semiMajor >= 1.5 && p.p_semiMajor < 5)
                 return "mars";
-            else if (p.semiMajorAxis >= 5 && p.semiMajorAxis < 9)
+            else if (p.p_semiMajor >= 5 && p.p_semiMajor < 9)
                 return "jupiter";
-            else if (p.semiMajorAxis >= 9 && p.semiMajorAxis < 15)
+            else if (p.p_semiMajor >= 9 && p.p_semiMajor < 15)
                 return "saturn";
-            else if (p.semiMajorAxis >= 15 && p.semiMajorAxis < 25)
+            else if (p.p_semiMajor >= 15 && p.p_semiMajor < 25)
                 return "uranus";
-            else if (p.semiMajorAxis >= 25 && p.semiMajorAxis < 35)
+            else if (p.p_semiMajor >= 25 && p.p_semiMajor < 35)
                 return "neptune";
             else
                 return "pluto";
@@ -665,7 +675,6 @@ public class Generate2DView : MonoBehaviour
 
         return textureName;
     }
-
     
     public void loadDummyData()
     {
@@ -683,7 +692,7 @@ public class Generate2DView : MonoBehaviour
         OurSun.addPlanet(new Planet2D("Uranus", "N/A", 3.98f, 14.53f, -1, 19.19f, 30687, -1));
         OurSun.addPlanet(new Planet2D("Neptune", "N/A", 3.87f, 17.15f, -1, 30.1f, 60190, -1));
 
-        solarSystems.Add(OurSun);
+        //solarSystems.Add(OurSun);
 
         // Gliese 667
         SolarSystem2D Gliese667C = new SolarSystem2D(1, "Gliese 667 C", 0, 0, 7, 1);
@@ -696,7 +705,7 @@ public class Generate2DView : MonoBehaviour
         Gliese667C.addPlanet(new Planet2D("Gliese 667 d", "RV", -1, 5.1f, -1, 0.28f, 91.6f, -1));
         Gliese667C.addPlanet(new Planet2D("Gliese 667 g", "RV", -1, 5.0f, -1, 0.55f, 256f, -1));
 
-        solarSystems.Add(Gliese667C);
+        //solarSystems.Add(Gliese667C);
 
         // Tau Ceti
         SolarSystem2D TauCeti = new SolarSystem2D(2, "Tau Ceti", 0, 0, 5, 1);
@@ -707,7 +716,7 @@ public class Generate2DView : MonoBehaviour
         TauCeti.addPlanet(new Planet2D("Tau Ceti e", "RV", -1, 4.3f, 11.9f, 0.552f, 168.1f, -1));
         TauCeti.addPlanet(new Planet2D("Tau Ceti f", "RV", -1, 6.6f, 11.9f, 1.350f, 642f, -1));
 
-        solarSystems.Add(TauCeti);
+        //solarSystems.Add(TauCeti);
 
         // Gliese 581
         SolarSystem2D Gliese581 = new SolarSystem2D(3, "Gliese 581", 0, 0, 6, 1);
@@ -719,14 +728,14 @@ public class Generate2DView : MonoBehaviour
         Gliese581.addPlanet(new Planet2D("Gliese 581 f", "RV", -1, 7.0f, 20.3f, 0.758f, 433f, -1));
         Gliese581.addPlanet(new Planet2D("Gliese 581 g", "RV", -1, 3.10f, 20.3f, 0.1460f, 36.5f, 231f));
 
-        solarSystems.Add(Gliese581);
+        //solarSystems.Add(Gliese581);
 
         for (int i = 0; i < 100; i++)
         {
             SolarSystem2D Filler = new SolarSystem2D(i + 4, "Filler" + i, 0, 0, 0, 1);
             Filler.addStar(new Star2D("Filler" + i, "N/A", 3498, 0, 0));
 
-            solarSystems.Add(Filler);
+            //solarSystems.Add(Filler);
         }
     }
 
