@@ -5,6 +5,8 @@ public class PointerInteract : VRTK_InteractableObject {
 
     public Renderer rend;
 
+    public GameObject parent;
+
     public override void StartUsing (VRTK_InteractUse usingObject) {
         base.StartUsing (usingObject);
         Debug.Log ("ON");
@@ -13,7 +15,16 @@ public class PointerInteract : VRTK_InteractableObject {
         //rend.material.shader = Shader.Find ("Specular");
         //rend.material.SetColor ("_SpecColor", Color.red);
 
+        parent = this.transform.root.gameObject;
+
+        Generate2DView generateScript = parent.GetComponent<Generate2DView>();
+
+        //generateScript.
+
         // Debug.Log(this.name);
+
+        // get name of gameobject
+        // pass it to 3d function
 
 
 
